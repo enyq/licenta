@@ -14,7 +14,8 @@ class Module
     Module(byte addr = 0, byte type = 0);
     void sendMessage(String msg);
     String getInfo();
-    void getType(); //TODO: Implement getType method
+    byte getType();
+    byte getAddr();
   private:
     byte _addr;
     byte _type;

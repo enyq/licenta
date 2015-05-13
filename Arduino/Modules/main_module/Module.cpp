@@ -51,3 +51,11 @@ String Module::getInfo()
   }
   return msg;
 }
+
+byte Module::getType(){
+  return _type;
+}
+
+byte Module::getAddr(){
+  return _addr;
+}
