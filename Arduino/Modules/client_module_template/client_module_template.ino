@@ -22,6 +22,7 @@ void setup() {
   // If the address was reset, will ask for a new one from the main module
   if (addr == INITIAL_ADDR) { 
     addr = getNewAddress();
+    EEPROM.write(ADDR_LOCATION, addr);
     Wire.begin(addr);
   }
 }
