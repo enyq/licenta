@@ -12,9 +12,9 @@ class Module
 {
   public:
     Module(byte addr = 0, byte type = 0);
-    void send_message(String msg);
-    String get_info();
-    void get_type();
+    void sendMessage(String msg);
+    String getInfo();
+    void getType(); //TODO: Implement getType method
   private:
     byte _addr;
     byte _type;

@@ -25,7 +25,7 @@ Module::Module(byte addr, byte type)
     interpret(msg);
   }
 */
-void Module::send_message(String msg)
+void Module::sendMessage(String msg)
 {
   byte i = 0;
   Wire.beginTransmission(_addr);
@@ -41,7 +41,7 @@ void Module::send_message(String msg)
     Wire.write(msg);
   }
 */
-String Module::get_info()
+String Module::getInfo()
 {
   String msg="";
   byte msg_len = 0;
