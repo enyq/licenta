@@ -17,12 +17,16 @@
 #include <SPI.h>
 #include <Ethernet.h>
 #include <SD.h>
-#include <EEPROM.h>       
+#include <EEPROM.h>     
+#include "Logger.h"
 //#include <RTC.h> // TODO: import correct RTC header file
 
 String info;
 
 StatusLed statusLed(1, 2, 3); // TODO: Set the correct values
+
+Logger logger(LOG_DEBUG);
+
 
 // TODO: This info will be read from the SD card, but will be set from here for now
 byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02 };
@@ -57,6 +61,7 @@ void loop() {
 // TODO: format sent data to something friendly
 void listenForWebClients(){
   EthernetClient client = server.available();
+  logger.info("Client connected!");
   if (client) {
     // an http request ends with a blank line
     boolean currentLineIsBlank = true;
@@ -105,13 +110,15 @@ void listenForWebClients(){
 }
 
 void loadModulesFromEEPROM(){
+  logger.info("Modules loading from EEPROM");
   modules[0] = Module(255, 255);
   activeModules = EEPROM.read(0);
+  logger.debug("Active modules number: " + activeModules);
   if (activeModules > MAX_MODULES_NUMBER){
     activeModules = MAX_MODULES_NUMBER;
   }
   for (byte i = 1; i < activeModules; i++){
-    modules[i] = Module(EEPROM.read(1 + 2 * i),EEPROM.read(2 + 2 * i)); 
+    modules[i] = Module(EEPROM.read(1 + 2 * i),EEPROM.read(2 + 2 * i));
   }
 }
 
