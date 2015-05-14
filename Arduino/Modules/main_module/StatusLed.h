@@ -15,12 +15,13 @@ class StatusLed
     void setWarningType(byte wt);
     void update();
   private:
+    void turnOffAll();
     byte _ledPin[3];
-    byte _warningType = 0;
-    unsigned long _lastUpdate = 0;
-    byte _state = HIGH;
-    byte _selectedLed = 0;
-    byte _blinking = 0;
+    byte _warningType;
+    unsigned long _lastUpdate;
+    byte _state;
+    byte _selectedLed;
+    byte _blinking;
 };
 
 #endif

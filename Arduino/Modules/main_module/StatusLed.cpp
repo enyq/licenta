@@ -21,12 +21,22 @@ StatusLed::StatusLed(byte greenPin, byte yellowPin, byte redPin){
   _ledPin[0] = greenPin;
   _ledPin[1] = yellowPin;
   _ledPin[2] = redPin;
+  _warningType = 0;
+  _lastUpdate = 0;
+  _state = HIGH;
+  _selectedLed = 0;
+  _blinking = 0;
   for (int i = 0; i < 3; i++) pinMode(_ledPin[i], OUTPUT);
   digitalWrite(_ledPin[_selectedLed], _state);
 }
 
 void StatusLed::setWarningType(byte wt){
-  _warningType = wt;
+  if ((wt >= 0) && (wt <= 5)){
+    turnOffAll();
+    _warningType = wt;
+    _state = HIGH;
+    update();
+  }
 }
 
 void StatusLed::update(){
@@ -35,9 +45,13 @@ void StatusLed::update(){
   if (_blinking == 1) {
     if (millis() - _lastUpdate >= 1000 / WARNING__LED_BLINKING_FREQUENCY) {
       _state = 1 xor _state;
-      digitalWrite(_ledPin[_selectedLed], _state);
       _lastUpdate = millis();
     }
   }
+  digitalWrite(_ledPin[_selectedLed], _state);
+}
+
+void StatusLed::turnOffAll(){
+  for (byte i = 0; i < 3; i++) digitalWrite(_ledPin[i], LOW);
 }
 
