@@ -1,7 +1,7 @@
 /*
   Logger.h - Library for TODO
   Created by TODO, May 14, 2015.
-  TODOReleased into the public domain.
+  TODO: Released into the public domain.
 */
 #ifndef Logger_h
 #define Logger_h

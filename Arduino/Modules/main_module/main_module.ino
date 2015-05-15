@@ -10,14 +10,14 @@
 // --------------------------------------
 // | i ranging from 0 to No. of modules |
 
-#include "Module.h"
+#include "ModuleManager.h"
 #include "StatusLed.h"
 #include "Constants.h"
 #include <Wire.h>
 #include <SPI.h>
 #include <Ethernet.h>
+#include <EEPROM.h>
 #include <SD.h>
-#include <EEPROM.h>     
 #include "Logger.h"
 //#include <RTC.h> // TODO: import correct RTC header file
 
@@ -35,8 +35,7 @@ IPAddress gateway(192,168,1, 1);
 IPAddress subnet(255, 255, 0, 0);
 EthernetServer server(80);
 
-Module modules[MAX_MODULES_NUMBER];
-byte activeModules = 1;
+ModuleManager moduleMgr;
 
 void setup() {
   Wire.begin();             // Initialize I2C communication with client modules
@@ -48,8 +47,6 @@ void setup() {
   // (10 on most Arduino boards, 53 on the Mega) must be left as an output
   // or the SD library functions will not work.
   pinMode(10, OUTPUT);
-  loadModulesFromEEPROM(); // TODO: Implement loadModulesFrom EEPROM  
-  moduleCleanUp();
 }
 
 void loop() {
@@ -109,43 +106,9 @@ void listenForWebClients(){
   }
 }
 
-void loadModulesFromEEPROM(){
-  logger.info("Modules loading from EEPROM");
-  modules[0] = Module(255, 255);
-  activeModules = EEPROM.read(0);
-  logger.debug("Active modules number: " + activeModules);
-  if (activeModules > MAX_MODULES_NUMBER){
-    activeModules = MAX_MODULES_NUMBER;
-  }
-  for (byte i = 1; i < activeModules; i++){
-    modules[i] = Module(EEPROM.read(1 + 2 * i),EEPROM.read(2 + 2 * i));
-  }
-}
-
-void saveModulesToEEPROM(){
-  EEPROM.write(0, activeModules);
-  for (byte i = 0; i < activeModules; i++){
-    EEPROM.write(1 + 2 * i, modules[i].getAddr());
-    EEPROM.write(2 + 2 * i, modules[i].getType());
-  }
-}
-
-// TODO: Implement moduleCleanUp function => Maybe there should be a counter of unsuccessfull retries, will figure out that later
-void moduleCleanUp(){
-  // This function will check for removed modules, and after several unsuccessfull retries will remove them from the list
-  
-  // Will save the new modules to EEPROM
-  saveModulesToEEPROM();
-}
 // TODO: Implement interpetMessage function
 byte interpretMessage(String msg){
   return NEW_MODULE;
 }
 
-void checkForNewModule(){
-  String msg = modules[0].getInfo();
-  byte moduleType = interpretMessage(msg);
-  if (moduleType > 0){
-    modules[++activeModules] = Module(activeModules, moduleType);
-  }
-}
+

@@ -1,7 +1,7 @@
 /*
   Logger.cpp - Library for TODO
   Created by TODO, May 14, 2015.
-  TODO Released into the public domain.
+  TODO: Released into the public domain.
 */
 
 #include "Arduino.h"

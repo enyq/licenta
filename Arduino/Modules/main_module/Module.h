@@ -1,7 +1,7 @@
 /*
   Module.h - Library for TODO
   Created by TODO, May 13, 2015.
-  TODOReleased into the public domain.
+  TODO: Released into the public domain.
 */
 #ifndef Module_h
 #define Module_h
@@ -22,3 +22,4 @@ class Module
 };
 
 #endif
+

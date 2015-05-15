@@ -1,7 +1,7 @@
 /*
   Constants.h - Library for TODO
   Created by TODO, May 13, 2015.
-  TODOReleased into the public domain.
+  TODO: Released into the public domain.
 */
 #ifndef Constants_h
 #define Constants_h

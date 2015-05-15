@@ -1,7 +1,7 @@
 /*
   Module.cpp - Library for TODO
   Created by TODO, May 13, 2015.
-  TODO Released into the public domain.
+  TODO: Released into the public domain.
 */
 
 #include "Arduino.h"
@@ -59,3 +59,4 @@ byte Module::getType(){
 byte Module::getAddr(){
   return _addr;
 }
+
