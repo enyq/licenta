@@ -13,6 +13,7 @@ class Logger
 {
   public:
     Logger(byte level = LOG_INFO, byte dest = LOG_SERIAL_ONLY, String destFile = "");
+    void init();
     void info(String msg);
     void warn(String msg);
     void debug(String msg);

@@ -7,16 +7,19 @@
 #include "Arduino.h"
 #include "Logger.h"
 #include "Constants.h"
-#include <SD.h>
+//#include <SD.h>
 
 Logger::Logger(byte level, byte dest, String destFile){
   _level = level;
   _dest = dest;
   _destFile = destFile;
-  Serial.begin(9600);
   if ((_dest - LOG_SERIAL_ONLY > 0) && (_destFile != "")){
     //TODO: Initialize SD card
   }
+}
+
+void Logger::init(){
+  Serial.begin(9600);
 }
 
 // TODO: Include time too (to be done later)

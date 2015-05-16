@@ -17,7 +17,7 @@
 #include <SPI.h>
 #include <Ethernet.h>
 #include <EEPROM.h>
-#include <SD.h>
+//#include <SD.h>
 #include "Logger.h"
 //#include <RTC.h> // TODO: import correct RTC header file
 
@@ -27,7 +27,6 @@ StatusLed statusLed(1, 2, 3); // TODO: Set the correct values
 
 Logger logger(LOG_DEBUG);
 
-
 // TODO: This info will be read from the SD card, but will be set from here for now
 byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02 };
 IPAddress ip(192,168,1, 177);
@@ -35,13 +34,15 @@ IPAddress gateway(192,168,1, 1);
 IPAddress subnet(255, 255, 0, 0);
 EthernetServer server(80);
 
-ModuleManager moduleMgr;
+ModuleManager moduleMgr(&logger);
 
 void setup() {
+  logger.init();
+  logger.info("Setting up system");
   Wire.begin();             // Initialize I2C communication with client modules
   Ethernet.begin(mac, ip);  // Initialize ethernet communication
   server.begin();           // Start the web server
-  
+
   // On the Ethernet Shield, CS is pin 4. It's set as an output by default.
   // Note that even if it's not used as the CS pin, the hardware SS pin
   // (10 on most Arduino boards, 53 on the Mega) must be left as an output
@@ -50,16 +51,19 @@ void setup() {
 }
 
 void loop() {
-  listenForWebClients();
-  statusLed.update();
-  
+  logger.info("LOOP");
+  //listenForWebClients();
+  //statusLed.update();
+  //logger.info(moduleMgr.getInfo(0));
+  moduleMgr.updateModules();
+  delay(5000);
 }
 
 // TODO: format sent data to something friendly
 void listenForWebClients(){
   EthernetClient client = server.available();
-  logger.info("Client connected!");
   if (client) {
+    logger.info("Client connected!");
     // an http request ends with a blank line
     boolean currentLineIsBlank = true;
     while (client.connected()) {
@@ -108,7 +112,7 @@ void listenForWebClients(){
 
 // TODO: Implement interpetMessage function
 byte interpretMessage(String msg){
-  return NEW_MODULE;
+  return NEW_MODULE_ID;
 }
 
 

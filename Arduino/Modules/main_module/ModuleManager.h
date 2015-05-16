@@ -9,22 +9,27 @@
 #include "Arduino.h"
 #include "Constants.h"
 #include "Module.h"
+#include "Logger.h"
 
 class ModuleManager
 {
   public:
     ModuleManager();
+    ModuleManager(Logger* logger);
 //    String getMessage(String msg);
     String getInfo(byte moduleNumber);
     void updateModules();
 //    byte getType();
 //    byte getAddr();
   private:
+    void init();
     Module _modules[MAX_MODULES_NUMBER];
     void loadModules();
     void saveModules();
     void moduleCleanUp();
+    byte pingAll();
     byte _activeModules;
+    Logger * _logger;
 };
 
 #endif

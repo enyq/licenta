@@ -10,7 +10,7 @@
 
 const byte I2C_MAX_MESSAGE_LENGTH = 32;
 const byte WARNING__LED_BLINKING_FREQUENCY = 1; // No of blinks every second
-const byte MAX_MODULES_NUMBER = 109;
+const byte MAX_MODULES_NUMBER = 110;
 const byte NEW_MODULE_ID = 110;
 const byte LOG_INFO = 0;
 const byte LOG_WARN = 1;

@@ -1,0 +1,2 @@
+http://www.gammon.com.au/forum/?id=10896
+Each device needs to have a unique address in the range 8 to 119. Address 0 is reserved as a "broadcast" address, addresses 1 to 7 are reserved for other purposes, and addresses 120 to 127 are reserved for future use.

@@ -16,40 +16,42 @@ Module::Module(byte addr, byte type)
 }
 
 // Sends the message to the client module
-/* Client module should receive with the following code:
-  Wire.begin(_addr);
-  Wire.onReceive(receiveEvent);
-  void receiveEvent(byte length){
-    String msg="";
-    while (1 < Wire.available()) msg += Wire.read();
-    interpret(msg);
-  }
-*/
-void Module::sendMessage(String msg)
-{
+String Module::sendMessage(String msg, byte response){
   byte i = 0;
   Wire.beginTransmission(_addr);
-  while (msg[i] != '\0') Wire.write(msg[i++]);
+  Wire.write(msg.c_str());
   Wire.endTransmission();
+  String resp = "NO RESP";  // TODO: delete NO RESP from here
+  if (response == 1){
+    delay(250);
+    resp = getMessage();
+  }
+  return resp;
 }
 
 // Gets the info from the client module
-/* Client module should respond with the following code:
-  Wire.begin(_addr);)
-  Wire.onRequest(requestEvent);
-  void requestEvent(){
-    Wire.write(msg);
-  }
-*/
-String Module::getInfo()
-{
+String Module::getMessage(){
   String msg="";
   byte msg_len = 0;
   Wire.requestFrom(_addr, I2C_MAX_MESSAGE_LENGTH);
-  while (Wire.available() && (msg_len < I2C_MAX_MESSAGE_LENGTH)){
-    msg = msg + Wire.read();
+  while ((Wire.available()) && (msg_len++ <= I2C_MAX_MESSAGE_LENGTH)){
+    msg += char(Wire.read());
   }
-  return msg;
+  Serial.print("getMessage: "); // TODO: Clean up!!!
+  Serial.println(msg);
+  return msg;  
+}
+
+byte Module::ping(){
+  String msg = sendMessage("PING", 1);
+  if (msg[3] != '1') _pingRetries++;
+//  Serial.print("THIS IS PING "); //TODO: Clean up!!!
+//  Serial.println(msg);
+  return  (msg[3] == '1');
+}
+
+String Module::getInfo(){
+  return sendMessage("GET", 1);
 }
 
 byte Module::getType(){
@@ -60,3 +62,13 @@ byte Module::getAddr(){
   return _addr;
 }
 
+byte Module::getRetries(){
+  return _pingRetries;
+}
+
+void Module::setAddr(byte addr){
+  if ((addr > 0) && (addr < MAX_MODULES_NUMBER)){
+    _addr = addr;
+    sendMessage("SET ADDR " + addr);
+  }
+}

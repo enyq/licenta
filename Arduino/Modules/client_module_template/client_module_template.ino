@@ -7,43 +7,19 @@
 
 #include <Wire.h>
 #include <EEPROM.h>
+#include "ClientModule.h"
+#include "Constants.h"
 
-const byte INITIAL_ADDR = 255; // Depending on module type it should have the corresponding value
-const byte ADDR_LOCATION = 0; // In EEPROM, the first slot will store the module address
+const byte MODULE_TYPE = 255; // Depending on module type it should have the corresponding value
 
-byte addr = EEPROM.read(ADDR_LOCATION);
+ClientModule clientModule(MODULE_TYPE);//, NEW_MODULE_ID);
 
 void setup() {
-  if (addr == 0) addr = INITIAL_ADDR;
-  Wire.begin(addr);
-  Wire.onReceive(receiveEvent);
-  Wire.onRequest(requestEvent);
-  
-  // If the address was reset, will ask for a new one from the main module
-  if (addr == INITIAL_ADDR) { 
-    addr = getNewAddress();
-    EEPROM.write(ADDR_LOCATION, addr);
-    Wire.begin(addr);
-  }
+  Serial.begin(9600);
+  Serial.println("SERIAL PORT STARTED!");
+  clientModule.init();
 }
 
 void loop() {
-
 }
 
-// TODO: To be implemented later
-byte getNewAddress(){
-  return 0;
-}
-
-void receiveEvent(int length){
-   String msg="";
-   while (1 < Wire.available()) msg += Wire.read();
-   //interpret(msg);
-}
-
-void requestEvent(){
-  String msg;// = gatherInfo();
-  byte i = 0;
-  while (msg[i] != '\0') Wire.write(msg[i++]);
-}
