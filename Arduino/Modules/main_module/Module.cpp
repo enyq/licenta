@@ -12,7 +12,9 @@
 Module::Module(byte addr, byte type)
 {
   _addr = addr;
+  _respAddr = _addr;
   _type = type;
+  _pingRetries = 0;
 }
 
 // Sends the message to the client module
@@ -33,7 +35,7 @@ String Module::sendMessage(String msg, byte response){
 String Module::getMessage(){
   String msg="";
   byte msg_len = 0;
-  Wire.requestFrom(_addr, I2C_MAX_MESSAGE_LENGTH);
+  Wire.requestFrom(_respAddr, I2C_MAX_MESSAGE_LENGTH);
   while ((Wire.available()) && (msg_len++ <= I2C_MAX_MESSAGE_LENGTH)){
     msg += char(Wire.read());
   }
@@ -45,8 +47,7 @@ String Module::getMessage(){
 byte Module::ping(){
   String msg = sendMessage("PING", 1);
   if (msg[3] != '1') _pingRetries++;
-//  Serial.print("THIS IS PING "); //TODO: Clean up!!!
-//  Serial.println(msg);
+  else _pingRetries = 0;
   return  (msg[3] == '1');
 }
 
@@ -67,8 +68,12 @@ byte Module::getRetries(){
 }
 
 void Module::setAddr(byte addr){
-  if ((addr > 0) && (addr < MAX_MODULES_NUMBER)){
+  if ((addr >= I2C_MIN_ADDR) && (addr < MAX_MODULES_NUMBER)){
+    _respAddr = addr; 
+    String msg = sendMessage("SET ADDR " + (String)addr, 1);
+    Serial.println("SET_ADDR " + msg);
+//    if ((msg.startsWith("ACK")) || (_pingRetries > 0)) _addr = addr;
+//    else _respAddr = _addr;
     _addr = addr;
-    sendMessage("SET ADDR " + addr);
   }
 }

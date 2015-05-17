@@ -1,5 +1,12 @@
-// SD card attached to SPI bus as follows: MOSI - pin 11 MISO - pin 12 CLK - pin 13 CS - pin 4
-// Ethernet attached to pins 10, 11, 12, 13
+/*  ARDUINO MEGA
+    const byte SPI_SS   = 53;
+    const byte SPI_MOSI = 51;
+    const byte SPI_MISO = 50;
+    const byte SPI_SCK  = 52;
+    */
+// ARDUINO UNO: SD card attached to SPI bus as follows: MOSI - pin 11 MISO - pin 12 CLK - pin 13 CS - pin 4
+// ARDUINO UNO: Ethernet attached to pins 10, 11, 12, 13
+
 // EPPROM will store the modules information, so in case of resetting the unit, information will remain. Storage in the following format:
 // --------------------------------------
 // |  Position  |        Value          |
@@ -15,7 +22,7 @@
 #include "Constants.h"
 #include <Wire.h>
 #include <SPI.h>
-#include <Ethernet.h>
+#include <Ethernet.h> // TODO: To be changed later to Ethernet module, for the shield
 #include <EEPROM.h>
 //#include <SD.h>
 #include "Logger.h"
@@ -29,10 +36,10 @@ Logger logger(LOG_DEBUG);
 
 // TODO: This info will be read from the SD card, but will be set from here for now
 byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02 };
-IPAddress ip(192,168,1, 177);
+IPAddress ip(192,168,1, 180);
 IPAddress gateway(192,168,1, 1);
-IPAddress subnet(255, 255, 0, 0);
-EthernetServer server(80);
+IPAddress subnet(255, 255, 255, 0);
+EthernetServer server = EthernetServer(80);
 
 ModuleManager moduleMgr(&logger);
 
@@ -48,10 +55,16 @@ void setup() {
   // (10 on most Arduino boards, 53 on the Mega) must be left as an output
   // or the SD library functions will not work.
   pinMode(10, OUTPUT);
+  logger.info("SYSTEM SETUP SUCCESSFULL");
+//  EEPROM.write(0, 1);
+//  EEPROM.write(1, 16);
+//  EEPROM.write(2, 240);
+  moduleMgr.init();
+  moduleMgr.updateModules();
 }
 
 void loop() {
-  logger.info("LOOP");
+//  logger.info("LOOP");
   //listenForWebClients();
   //statusLed.update();
   //logger.info(moduleMgr.getInfo(0));
@@ -82,12 +95,22 @@ void listenForWebClients(){
           client.println("<!DOCTYPE HTML>");
           client.println("<html>");
           // output the value of each analog input pin
-          for (byte analogChannel = 0; analogChannel < 6; analogChannel++) {
+/*          for (byte analogChannel = 0; analogChannel < 6; analogChannel++) {
             int sensorReading = analogRead(analogChannel);
             client.print("analog input ");
             client.print(analogChannel);
             client.print(" is ");
             client.print(sensorReading);
+            client.println("<br />");
+          }*/
+          client.print("Number of active modules connected: ");
+          client.print(moduleMgr.getModuleNumber());
+          client.println("<br />");
+          for (byte i = 1; i <= moduleMgr.getModuleNumber(); i++){
+            client.print("Info from client ");
+            client.print(i);
+            client.print(": ");
+            client.print(moduleMgr.getInfo(i));
             client.println("<br />");
           }
           client.println("</html>");

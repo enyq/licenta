@@ -16,15 +16,19 @@
 
 class ClientModule{
   public:
-    ClientModule(byte type, byte addr = 0);
+    ClientModule(byte type, String (*gatherFunct)(void), void (*interpretFunct)(String), byte addr = 0);
     void resetAddr();
     byte getAddr();
     void init();
+
 private:
+  static String (*_gatherInfo)(void);
+  static void (*_interpretCommand)(String);
   static String fillUp(String msg);
   static void receiveEvent(int length);
   static void requestEvent();
   void saveAddr();
+  static void setAddr(byte addr);
   byte _addr;
   byte _type;
 };

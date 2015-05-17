@@ -29,6 +29,7 @@ class Module
   private:
     String getMessage();
     byte _addr;
+    byte _respAddr;
     byte _type;
     byte _pingRetries;
 };

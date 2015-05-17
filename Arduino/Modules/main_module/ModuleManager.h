@@ -16,13 +16,15 @@ class ModuleManager
   public:
     ModuleManager();
     ModuleManager(Logger* logger);
+    void init();
 //    String getMessage(String msg);
     String getInfo(byte moduleNumber);
     void updateModules();
+    byte getModuleNumber();
 //    byte getType();
 //    byte getAddr();
   private:
-    void init();
+//    void init();
     Module _modules[MAX_MODULES_NUMBER];
     void loadModules();
     void saveModules();
