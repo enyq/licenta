@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="D:\Egyetem\An4Sem1\gcm-master\gcm-client\GcmClient\build\intermediates\exploded-aar\com.android.support\support-v4\22.1.1\jars\classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="c95ba8152923e4872e86a82cfcba9a51c0214328">
+        <dex dex="D:\Egyetem\An4Sem1\gcm-master\gcm-client\GcmClient\build\intermediates\pre-dexed\debug\classes-a3f2b1fe40c6d5ad5f5541b54304ce84a5dd678a.jar" />
+    </item>
+    <item
+        jar="D:\Egyetem\An4Sem1\gcm-master\gcm-client\GcmClient\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.1.1\jars\classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="a3ff3c506644c820eb2bdf06e8339f72be578551">
+        <dex dex="D:\Egyetem\An4Sem1\gcm-master\gcm-client\GcmClient\build\intermediates\pre-dexed\debug\classes-00f227fa58489efd411b7aa0f5e9bfcc8f6f06c7.jar" />
+    </item>
+    <item
+        jar="D:\Egyetem\An4Sem1\gcm-master\gcm-client\GcmClient\build\intermediates\exploded-aar\com.google.android.gms\play-services\4.0.30\jars\classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="cebe8e4a3a469c4623addcca1dc571407ff3a08e">
+        <dex dex="D:\Egyetem\An4Sem1\gcm-master\gcm-client\GcmClient\build\intermediates\pre-dexed\debug\classes-779f5f73183342d583c1effc6725d37698c2137c.jar" />
+    </item>
+    <item
+        jar="C:\Users\Eniko\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.1.1\support-annotations-22.1.1.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="01d051a6bfb1218b1db2d3a5af0480ac2c25c42a">
+        <dex dex="D:\Egyetem\An4Sem1\gcm-master\gcm-client\GcmClient\build\intermediates\pre-dexed\debug\support-annotations-22.1.1-925f974714fb01cce71a82b33e2218ed3c6ba937.jar" />
+    </item>
+    <item
+        jar="D:\Egyetem\An4Sem1\gcm-master\gcm-client\GcmClient\build\intermediates\exploded-aar\com.android.support\support-v4\22.1.1\jars\libs\internal_impl-22.1.1.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="9e070ad32b2700b0343e8e0cccc437733d91ba3a">
+        <dex dex="D:\Egyetem\An4Sem1\gcm-master\gcm-client\GcmClient\build\intermediates\pre-dexed\debug\internal_impl-22.1.1-c5d2491db328c046b3e65d948a21728c7d778de0.jar" />
+    </item>
+
+</items>
