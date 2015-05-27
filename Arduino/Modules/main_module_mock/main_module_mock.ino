@@ -62,24 +62,24 @@ void listenForWebClientsXML(){
         // so you can send a reply
         if (c == '\n' && currentLineIsBlank) {
           // send a standard http response header
-          client.println("<Module data>");
+          client.println("<ModuleInfo>");
           for (int i = 0; i < 3; i++){
             client.println("  <MODULE>");
-            client.print("    <Module ID>");
+            client.print("    <ModuleID>");
             client.print(getID(i));
-            client.println("</Module ID>");
-            client.print("    <Module Name>");
+            client.println("</ModuleID>");
+            client.print("    <ModuleName>");
             client.print(getName(i));
-            client.println("</Module Name>");
-            client.print("    <Data time>");
+            client.println("</ModuleName>");
+            client.print("    <DataTime>");
             client.print(getTime(i));
-            client.println("</Data time>");
-            client.print("    <Module Data>");
+            client.println("</DataTime>");
+            client.print("    <ModuleData>");
             client.print(getInfo(i));
-            client.println("</Module Data>");
+            client.println("</ModuleData>");
             client.println("  </MODULE>");
           }
-          client.println("</Module data>");
+          client.println("</ModuleInfo>");
           break;
         }
         if (c == '\n') {
