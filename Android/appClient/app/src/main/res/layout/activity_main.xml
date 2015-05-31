@@ -15,30 +15,109 @@
         android:layout_marginBottom="5dp"
         android:text="is connected? " />
 
-    <EditText
-        android:id="@+id/etResponse"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:ems="10"
-        android:layout_marginTop="10dp"
-        android:inputType="textMultiLine" >
+<!--    &lt;!&ndash; Label &ndash;&gt;
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Add New Label"
+        android:padding="8dip" />
 
-        <requestFocus />
-    </EditText>
+    &lt;!&ndash; Input Text &ndash;&gt;
+    <EditText android:id="@+id/input_label"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dip"
+        android:layout_marginRight="8dip"/>
 
-    <RelativeLayout
+    &lt;!&ndash; Add Button &ndash;&gt;
+    <Button android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Label"
+        android:layout_marginLeft="8dip"
+        android:layout_marginTop="8dip"/>-->
+
+    <!-- Select Label -->
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Incalzire"
+        android:padding="8dip" />
+
+    <!-- Spinner Dropdown -->
+    <Spinner
+        android:id="@+id/heatSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:prompt="@string/spinner_title"
+        android:layout_marginTop="20dip"
+        android:layout_marginLeft="8dip"
+        android:layout_marginRight="8dip"
+        />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Aerisire"
+        android:padding="8dip" />
+
+    <!-- Spinner Dropdown -->
+    <Spinner
+        android:id="@+id/airSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:prompt="@string/spinner_title"
+        android:layout_marginTop="20dip"
+        android:layout_marginLeft="8dip"
+        android:layout_marginRight="8dip"
+        />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Luminozitate"
+        android:padding="8dip" />
+
+    <!-- Spinner Dropdown -->
+    <Spinner
+        android:id="@+id/lightingSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:prompt="@string/spinner_title"
+        android:layout_marginTop="20dip"
+        android:layout_marginLeft="8dip"
+        android:layout_marginRight="8dip"
+        />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Siguranta"
+        android:padding="8dip" />
+
+    <!-- Spinner Dropdown -->
+    <Spinner
+        android:id="@+id/securitySpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:prompt="@string/spinner_title"
+        android:layout_marginTop="20dip"
+        android:layout_marginLeft="8dip"
+        android:layout_marginRight="8dip"
+        />
+
+
+   <!-- <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="temperature"
+            android:text="@string/dataValue"
             android:id="@+id/temp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:autoText="false" />
-    </RelativeLayout>
+    </RelativeLayout>-->
 
 </LinearLayout>

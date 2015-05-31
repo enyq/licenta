@@ -4,5 +4,6 @@
     <string name="app_name">Smart Home Management</string>
     <color name="myColor">#F5F5F5</color>
     <string name="temp">Temperatura</string>
-    <string name="umid">Umiditate</string>
+    <string name="spinner_title">Titlu</string>
+    <string name="dataValue">temperature</string>
 </resources>

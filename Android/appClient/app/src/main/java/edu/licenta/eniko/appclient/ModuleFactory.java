@@ -9,7 +9,7 @@ public class ModuleFactory {
             if(moduleType == null){
                 return null;
             }
-            if(moduleType.equals(ModuleEnum.COMFORT)){
+            if(moduleType.equals("Comfort")){
                 return new ComfortModule();
             } else if(moduleType.equals(ModuleEnum.SECURITY)){
                 return new SecurityModule();
