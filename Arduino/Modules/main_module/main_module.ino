@@ -24,8 +24,9 @@
 #include <SPI.h>
 #include <Ethernet.h> // TODO: To be changed later to Ethernet module, for the shield
 #include <EEPROM.h>
-//#include <SD.h>
+#include <SD.h>
 #include "Logger.h"
+
 //#include <RTC.h> // TODO: import correct RTC header file
 
 String info;
@@ -35,40 +36,52 @@ StatusLed statusLed(1, 2, 3); // TODO: Set the correct values
 Logger logger(LOG_DEBUG);
 
 // TODO: This info will be read from the SD card, but will be set from here for now
-byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02 };
+byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x22 };
 IPAddress ip(192,168,1, 180);
 IPAddress gateway(192,168,1, 1);
 IPAddress subnet(255, 255, 255, 0);
 EthernetServer server = EthernetServer(80);
 
+File myFile;
+
+char buff[50];
+
+// Will use a 8 byte serial number, although it is not like the UUID, the probability to have the same S/n's is 1:18446744073709551616. 
+// It could be assured from factory, that there will be no duplicates
+
 ModuleManager moduleMgr(&logger);
 
 void setup() {
   logger.init();
-  logger.info("Setting up system");
+  //logger.info("Setting up system");
   Wire.begin();             // Initialize I2C communication with client modules
   Ethernet.begin(mac, ip);  // Initialize ethernet communication
   server.begin();           // Start the web server
 
-  // On the Ethernet Shield, CS is pin 4. It's set as an output by default.
-  // Note that even if it's not used as the CS pin, the hardware SS pin
-  // (10 on most Arduino boards, 53 on the Mega) must be left as an output
-  // or the SD library functions will not work.
-  pinMode(10, OUTPUT);
-  logger.info("SYSTEM SETUP SUCCESSFULL");
+  pinMode(10, OUTPUT);      // Hardware SS pin (DO NOT CHANGE)
+//  logger.info("SYSTEM SETUP SUCCESSFULL");
 //  EEPROM.write(0, 1);
 //  EEPROM.write(1, 16);
 //  EEPROM.write(2, 240);
-  moduleMgr.init();
+  //moduleMgr.init();
+  //Serial.begin(9600);
+  //readFromCard();
+  if (!SD.begin(4)) {
+//    Serial.println("SD card initialization failed!");
+    return;
+  }
+//  Serial.println("SD card initialization done.");  
+//  logger.info("SYSTEM SETUP SUCCESSFULL");
   moduleMgr.updateModules();
 }
 
 void loop() {
 //  logger.info("LOOP");
-  //listenForWebClients();
+  listenForWebClients();
+  moduleMgr.updateModules();
   //statusLed.update();
   //logger.info(moduleMgr.getInfo(0));
-  moduleMgr.updateModules();
+//  moduleMgr.updateModules();
   delay(5000);
 }
 
@@ -76,44 +89,45 @@ void loop() {
 void listenForWebClients(){
   EthernetClient client = server.available();
   if (client) {
-    logger.info("Client connected!");
     // an http request ends with a blank line
     boolean currentLineIsBlank = true;
     while (client.connected()) {
       if (client.available()) {
         char c = client.read();
-        // if you've gotten to the end of the line (received a newline
-        // character) and the line is blank, the http request has ended,
-        // so you can send a reply
+        Serial.print(c);
         if (c == '\n' && currentLineIsBlank) {
-          // send a standard http response header
-          client.println("HTTP/1.1 200 OK");
-          client.println("Content-Type: text/html");
-          client.println("Connection: close");  // the connection will be closed after completion of the response
-          client.println("Refresh: 5");  // refresh the page automatically every 5 sec
+          // Send HTTP header
+          strcpy_P(buff, (char*)pgm_read_word(&(string_table[0])));
+          client.print(buff);
           client.println();
-          client.println("<!DOCTYPE HTML>");
-          client.println("<html>");
-          // output the value of each analog input pin
-/*          for (byte analogChannel = 0; analogChannel < 6; analogChannel++) {
-            int sensorReading = analogRead(analogChannel);
-            client.print("analog input ");
-            client.print(analogChannel);
-            client.print(" is ");
-            client.print(sensorReading);
-            client.println("<br />");
-          }*/
-          client.print("Number of active modules connected: ");
-          client.print(moduleMgr.getModuleNumber());
-          client.println("<br />");
-          for (byte i = 1; i <= moduleMgr.getModuleNumber(); i++){
-            client.print("Info from client ");
-            client.print(i);
-            client.print(": ");
-            client.print(moduleMgr.getInfo(i));
-            client.println("<br />");
+          // Send JSON header
+          strcpy_P(buff, (char*)pgm_read_word(&(string_table[1])));
+          client.print(buff);
+
+          // re-open the file for readig:
+          char fileName[] = "00000000.XML";
+          byte MODULES = 7;
+          for (byte i = 1; i <= MODULES; i++){
+            fileName[7] = i + '0';
+            myFile = SD.open(fileName);
+            if (myFile) {
+              // read from the file until there's nothing else in it:
+              while (myFile.available()) {
+                client.write(myFile.read());
+              }
+              // close the file:
+              myFile.close();
+              client.println();
+              if (i != MODULES) {
+                strcpy_P(buff, (char*)pgm_read_word(&(string_table[2])));
+                client.print(buff);              
+              } else {
+                strcpy_P(buff, (char*)pgm_read_word(&(string_table[3])));
+                client.print(buff);              
+              }
+            }
           }
-          client.println("</html>");
+          
           break;
         }
         if (c == '\n') {
@@ -137,5 +151,4 @@ void listenForWebClients(){
 byte interpretMessage(String msg){
   return NEW_MODULE_ID;
 }
-
 

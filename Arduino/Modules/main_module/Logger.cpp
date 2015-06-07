@@ -37,6 +37,6 @@ void Logger::warn(String msg){
 }
 
 void Logger::debug(String msg){
-  if (_level >= LOG_WARN) log("DEBUG : " + msg);
+  if (_level >= LOG_DEBUG) log("DEBUG : " + msg);
 }
 

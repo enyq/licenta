@@ -35,7 +35,7 @@ String Module::sendMessage(String msg, byte response){
 String Module::getMessage(){
   String msg="";
   byte msg_len = 0;
-  Wire.requestFrom(_respAddr, I2C_MAX_MESSAGE_LENGTH);
+  Wire.requestFrom(_addr, I2C_MAX_MESSAGE_LENGTH);
   while ((Wire.available()) && (msg_len++ <= I2C_MAX_MESSAGE_LENGTH)){
     msg += char(Wire.read());
   }
@@ -48,7 +48,8 @@ byte Module::ping(){
   String msg = sendMessage("PING", 1);
   if (msg[3] != '1') _pingRetries++;
   else _pingRetries = 0;
-  return  (msg[3] == '1');
+  if (msg[3] == '1'){ Serial.println("PINGED");return 1;} else{
+  Serial.println("NOT PINGED"); return  0; }
 }
 
 String Module::getInfo(){

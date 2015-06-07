@@ -44,7 +44,7 @@ void setup() {
 }
 
 void loop() {
-  listenForWebClientsXML();
+  listenForWebClientsJSON();
   delay(500);
 }
 
@@ -68,6 +68,9 @@ void listenForWebClientsXML(){
             client.print("    <ModuleID>");
             client.print(getID(i));
             client.println("</ModuleID>");
+            client.print("    <ModuleType>");
+            client.print(i);
+            client.println("</ModuleType>");
             client.print("    <ModuleName>");
             client.print(getName(i));
             client.println("</ModuleName>");
@@ -80,6 +83,77 @@ void listenForWebClientsXML(){
             client.println("  </MODULE>");
           }
           client.println("</ModuleInfo>");
+          break;
+        }
+        if (c == '\n') {
+          // you're starting a new line
+          currentLineIsBlank = true;
+        }
+        else if (c != '\r') {
+          // you've gotten a character on the current line
+          currentLineIsBlank = false;
+        }
+      }
+    }
+    // give the web browser time to receive the data
+    delay(1);
+    // close the connection:
+    client.stop();
+  }
+}
+
+void listenForWebClientsJSON(){
+  EthernetClient client = server.available();
+  if (client) {
+    Serial.println("Client connected!");
+    // an http request ends with a blank line
+    boolean currentLineIsBlank = true;
+    while (client.connected()) {
+      if (client.available()) {
+        char c = client.read();
+        // if you've gotten to the end of the line (received a newline
+        // character) and the line is blank, the http request has ended,
+        // so you can send a reply
+        if (c == '\n' && currentLineIsBlank) {
+          // send a standard http response header
+          client.println("HTTP/1.1 200 OK");
+          client.println("Content-Type: application/json");
+          client.println("Connection: close");
+          client.println();
+          client.println("{");
+          client.println("    \"ModuleData\": [");
+          client.println("        {");
+          client.println("            \"UUID\": \"8f739c7a0ea44e4e8ca4ac448e57b1c8\",");
+          client.println("            \"Type\": 22,");
+          client.println("            \"Name\": \"Kitchen Secutiry\",");
+          client.println("            \"Data\": [");
+          client.println("                {");
+          client.println("                    \"Time\": \"2015-05-26T19:20:30.45\",");
+          client.println("                    \"Values\": \"ABCDEFGHIJKLMNOPQRSTUVWZ\"");
+          client.println("                },");
+          client.println("                {");
+          client.println("                    \"Time\": \"2015-05-27T09:22:30.45\",");
+          client.println("                    \"Values\": \"ABCDEFGHIJKwerewOPQRSTUVWZ\"");
+          client.println("                }");
+          client.println("            ]");
+          client.println("        },");
+          client.println("        {");
+          client.println("            \"UUID\": \"e444a000558c4a978468917a49cac757\",");
+          client.println("            \"Type\": 17,");
+          client.println("            \"Name\": \"Living temperature\",");
+          client.println("            \"Data\": [");
+          client.println("                {");
+          client.println("                    \"Time\": \"2015-05-26T19:33:30.45\",");
+          client.println("                    \"Values\": \"12345678901234567890123456789012\"");
+          client.println("                },");
+          client.println("                {");
+          client.println("                    \"Time\": \"2015-05-27T12:44:30.45\",");
+          client.println("                    \"Values\": \"123456789012345678asdasdad\"");
+          client.println("                }");
+          client.println("            ]");
+          client.println("        }");
+          client.println("    ]");
+          client.println("}");
           break;
         }
         if (c == '\n') {
