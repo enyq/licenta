@@ -1,7 +1,11 @@
 package edu.licenta.eniko.appclient;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -14,7 +18,11 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,11 +43,14 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
 
     EditText etResponse;
     TextView tvIsConnected;
-    TextView temp;
+    TextView temp, moduleid;
+    TableRow tr1;
+
+
     EditText dataValue;
     static ArrayList<Module> modules = null;
     // Spinner element
-    Spinner heatSpinner, airSpinner, lightingSpinner, securitySpinner;
+    TableLayout heatTable, airTable, lightingTable, securityTable;
 
     // Add button
     Button btnAdd;
@@ -51,48 +62,168 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TableLayout t1;
+        DatabaseHelper dbh = new DatabaseHelper(getApplicationContext());
 
-        // Spinner element
-        heatSpinner = (Spinner) findViewById(R.id.heatSpinner);
+// Gets the data repository in write mode
+        SQLiteDatabase db = dbh.getWritableDatabase();
+        dbh.onUpgrade(db,1,2);
+// Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(FeedReaderContract.FeedRoom._ID, 1);
+        values.put(FeedReaderContract.FeedRoom.COLUMN_NAME_NAME, "Living Room");
 
-        // Spinner click listener
-        heatSpinner.setOnItemSelectedListener(this);
 
-        // Spinner element
-        airSpinner = (Spinner) findViewById(R.id.airSpinner);
+// Insert the new row, returning the primary key value of the new row
+        long newRowId;
+        newRowId = db.insert(
+                FeedReaderContract.FeedRoom.TABLE_NAME,
+                FeedReaderContract.FeedRoom._ID,
+                values);
+// Create a new map of values, where column names are the keys
+        ContentValues values2 = new ContentValues();
+        values2.put(FeedReaderContract.FeedType._ID, 1);
+        values2.put(FeedReaderContract.FeedType.COLUMN_NAME_TYPE, "Comfort");
 
-        // Spinner click listener
-        airSpinner.setOnItemSelectedListener(this);
 
-        // Spinner element
-        lightingSpinner = (Spinner) findViewById(R.id.lightingSpinner);
+// Insert the new row, returning the primary key value of the new row
+        long newRowId2;
+        newRowId2 = db.insert(
+                FeedReaderContract.FeedType.TABLE_NAME,
+                FeedReaderContract.FeedType._ID,
+                values2);
 
-        // Spinner click listener
-        lightingSpinner.setOnItemSelectedListener(this);
+// Create a new map of values, where column names are the keys
+        ContentValues values3 = new ContentValues();
+        values3.put(FeedReaderContract.FeedType._ID, 1);
+        values3.put(FeedReaderContract.FeedModule.COLUMN_NAME_VALUE,15);
+        values3.put(FeedReaderContract.FeedModule.COLUMN_NAME_DATE,15-16-2015);
+        values3.put(FeedReaderContract.FeedModule.COLUMN_NAME_TYPE,1);
+        values3.put(FeedReaderContract.FeedModule.COLUMN_NAME_ROOM_ID,1);
 
-        // Spinner element
-        securitySpinner = (Spinner) findViewById(R.id.securitySpinner);
 
-        // Spinner click listener
-        securitySpinner.setOnItemSelectedListener(this);
 
-//        etResponse = (EditText) findViewById(R.id.etResponse);
-        tvIsConnected = (TextView) findViewById(R.id.tvIsConnected);
+// Insert the new row, returning the primary key value of the new row
+        long newRowId3;
+        newRowId3 = db.insert(
+                FeedReaderContract.FeedModule.TABLE_NAME,
+                FeedReaderContract.FeedModule._ID,
+                values3);
 
-        // check if you are connected or not
-        if (isConnected()) {
-            tvIsConnected.setBackgroundColor(0xFF00CC00);
-            tvIsConnected.setText("You are connected");
-        } else {
-            tvIsConnected.setText("You are NOT connected");
+        TableLayout tl = (TableLayout) findViewById(R.id.main_table);
+
+        TableRow tr_head = new TableRow(this);
+      //  tr_head.setId(10);
+        tr_head.setBackgroundColor(Color.GRAY);
+        tr_head.setLayoutParams(new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.WRAP_CONTENT));
+
+
+        TextView label_date = new TextView(this);
+        //label_date.setId();
+        label_date.setText("Room");
+        label_date.setTextColor(Color.WHITE);
+        label_date.setPadding(5, 5, 5, 5);
+        tr_head.addView(label_date);// add the column to the table row here
+
+        TextView label_weight_kg = new TextView(this);
+       // label_weight_kg.setId(21);// define id that must be unique
+        label_weight_kg.setText("Value"); // set the text for the header
+        label_weight_kg.setTextColor(Color.WHITE); // set the color
+        label_weight_kg.setPadding(5, 5, 5, 5); // set the padding (if required)
+        tr_head.addView(label_weight_kg); // add the column to the table row here
+
+        tl.addView(tr_head, new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.WRAP_CONTENT));
+        Integer count=0;
+
+        //List<String> all = db.getAllLabels();
+        String selectQuery = "SELECT room.name, module.value FROM " + FeedReaderContract.FeedModule.TABLE_NAME + " inner join "+
+                FeedReaderContract.FeedRoom.TABLE_NAME +" on room._id=module.roomid;";
+
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        while (cursor.moveToNext()) {
+            String roomName = cursor.getString(0);// get the first variable
+            String valueTemp = cursor.getString(1);// get the second variable
+// Create the table row
+            TableRow tr = new TableRow(this);
+            if(count%2!=0) tr.setBackgroundColor(Color.GRAY);
+            tr.setId(100 + count);
+            tr.setLayoutParams(new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT));
+
+//Create two columns to add as table data
+            // Create a TextView to add date
+            TextView labelDATE = new TextView(this);
+            labelDATE.setId(200+count);
+            labelDATE.setText(roomName);
+            labelDATE.setPadding(2, 0, 5, 0);
+            labelDATE.setTextColor(Color.BLACK);
+            tr.addView(labelDATE);
+            TextView labelWEIGHT = new TextView(this);
+            labelWEIGHT.setId(200+count);
+            labelWEIGHT.setText(valueTemp);
+            labelWEIGHT.setTextColor(Color.BLACK);
+            tr.addView(labelWEIGHT);
+
+// finally add this to the table row
+            tl.addView(tr, new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT));
+            count++;
         }
 
-        new HttpAsyncTask().execute("http://79.119.109.209:1000/");
+    //    heatTable = (TableLayout)findViewById(R.id.tableLayout1);
+      //  tr1 = (TableRow)findViewById(R.id.tableRow3);
+       // tr1.setLayoutParams(new LayoutParams( LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
+     //  TextView textview = new TextView(this);
+     //   moduleid =(TextView)findViewById(R.id.roomName);
+    //    moduleid.setText("Room name");
+//textview.getTextColors(R.color.)
+     //   textview.setTextColor(Color.YELLOW);
+      //  tr1.addView(moduleid);
+     //   heatTable.addView(tr1);//, new TableLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+
+        // Spinner element
+     //   airTable = (TableLayout)findViewById(R.id.moduleid);
+
+        // Spinner click listener
+//        airSpinner.setOnItemSelectedListener(this);
+//
+//        // Spinner element
+//        lightingSpinner = (Spinner) findViewById(R.id.lightingSpinner);
+//
+//        // Spinner click listener
+//        lightingSpinner.setOnItemSelectedListener(this);
+//
+//        // Spinner element
+//        securitySpinner = (Spinner) findViewById(R.id.securitySpinner);
+//
+//        // Spinner click listener
+//        securitySpinner.setOnItemSelectedListener(this);
+
+//        etResponse = (EditText) findViewById(R.id.etResponse);
+       // tvIsConnected = (TextView) findViewById(R.id.tvIsConnected);
+
+        // check if you are connected or not
+//        if (isConnected()) {
+//            tvIsConnected.setBackgroundColor(0xFF00CC00);
+//            tvIsConnected.setText("You are connected");
+//        } else {
+//            tvIsConnected.setText("You are NOT connected");
+//        }
+
+    //    new HttpAsyncTask().execute("http://79.119.109.209:1000/");
         // Loading spinner data from database
-        loadSpinnerData(heatSpinner,"Comfort");
-        loadSpinnerData(airSpinner,"Comfort");
-        loadSpinnerData(lightingSpinner,"Comfort");
-        loadSpinnerData(securitySpinner,"Comfort");
+       // loadData(heatSpinner, "Comfort");
+       // loadData(airSpinner, "Comfort");
+       // loadData(lightingSpinner,"Comfort");
+       // loadData(securitySpinner,"Comfort");
 
         /**
          * Add new label button click listener
@@ -132,23 +263,13 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
     /**
      * Function to load the spinner data from SQLite database
      * */
-    private void loadSpinnerData(Spinner spinner, String type) {
+    private void loadData( String type) {
         // database handler
-        DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
 
-        // Spinner Drop down elements
-        List<String> lables = db.getAllLabels();
 
-        // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, lables);
 
-        // Drop down layout style - list view with radio button
-        dataAdapter
-                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // attaching data adapter to spinner
-        spinner.setAdapter(dataAdapter);
     }
 
     @Override
@@ -157,7 +278,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
         // On selecting a spinner item
         String label = parent.getItemAtPosition(position).toString();
 
-        getSelectedLabelValue(label);
+      //  getSelectedLabelValue(label);
         // Showing selected spinner item
         Toast.makeText(parent.getContext(), "You selected: " + label,
                 Toast.LENGTH_LONG).show();
@@ -368,11 +489,11 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
            if (modules != null && modules.size()!=0) {
                // createUI(modules);
                for (Module m : modules){
-                   DatabaseHandler db = new DatabaseHandler(
+                   DatabaseHelper db = new DatabaseHelper(
                            getApplicationContext());
 
                    // inserting new label into database
-                   db.insertLabel(m.getName());
+             //      db.();
                }
 
             }
