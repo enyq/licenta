@@ -4,25 +4,25 @@ package edu.licenta.eniko.appclient;
  * Created by Eniko on 5/24/2015.
  */
 public class Module {
-    int id;
+    String uuid;
     String name;
-    float value;
+    String value;
 
     public Module() {
     }
 
-    public Module(int id, String name, float value) {
-        this.id = id;
+    public Module(String uuid, String name, String value) {
+        this.uuid = uuid;
         this.name = name;
         this.value = value;
     }
 
-    public int getId() {
-        return id;
+    public String getUUId() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUUId(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getName() {
@@ -33,11 +33,11 @@ public class Module {
         this.name = name;
     }
 
-    public float getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(float value) {
+    public void setValue(String value) {
         this.value = value;
     }
 }
