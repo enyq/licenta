@@ -26,6 +26,7 @@
 #include <EEPROM.h>
 #include <SD.h>
 #include "Logger.h"
+#include "RealTime.h"
 
 //#include <RTC.h> // TODO: import correct RTC header file
 
@@ -34,6 +35,7 @@ String info;
 StatusLed statusLed(1, 2, 3); // TODO: Set the correct values
 
 Logger logger(LOG_DEBUG);
+RealTime RTC(40, 42, 44);
 
 // TODO: This info will be read from the SD card, but will be set from here for now
 byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x22 };
@@ -49,7 +51,7 @@ char buff[50];
 // Will use a 8 byte serial number, although it is not like the UUID, the probability to have the same S/n's is 1:18446744073709551616. 
 // It could be assured from factory, that there will be no duplicates
 
-ModuleManager moduleMgr(&logger);
+ModuleManager moduleMgr(&logger, &RTC);
 
 void setup() {
   logger.init();
@@ -58,7 +60,11 @@ void setup() {
   Ethernet.begin(mac, ip);  // Initialize ethernet communication
   server.begin();           // Start the web server
 
+  RTC.init();               // Initialize RTC module
+
   pinMode(10, OUTPUT);      // Hardware SS pin (DO NOT CHANGE)
+  Serial.print("Time&date is: ");
+  Serial.println(RTC.getDateTime());
 //  logger.info("SYSTEM SETUP SUCCESSFULL");
 //  EEPROM.write(0, 1);
 //  EEPROM.write(1, 16);
@@ -104,8 +110,34 @@ void listenForWebClients(){
           strcpy_P(buff, (char*)pgm_read_word(&(string_table[1])));
           client.print(buff);
 
-          // re-open the file for readig:
-          char fileName[] = "00000000.XML";
+          // Open JSON files for reading:
+          
+          File root = SD.open("/");
+          root.rewindDirectory();
+          File jsonFile = root.openNextFile();
+          bool noFiles = true;
+          
+          
+          while (jsonFile){
+            noFiles = false;
+            while (jsonFile.available()) {
+              client.write(jsonFile.read());
+            }
+            // close the file:
+            jsonFile.close();            
+            client.println();            
+            jsonFile = root.openNextFile();
+            if (jsonFile) {
+              strcpy_P(buff, (char*)pgm_read_word(&(string_table[4])));
+              client.print(buff);                            
+            }
+          }
+          // If there are no files on the SD card, the JSON file still has to be created correctly
+          if (noFiles) strcpy_P(buff, (char*)pgm_read_word(&(string_table[6])));
+          else strcpy_P(buff, (char*)pgm_read_word(&(string_table[5])));
+          client.print(buff);
+    
+          /*char fileName[] = "00000000.jsn";
           byte MODULES = 7;
           for (byte i = 1; i <= MODULES; i++){
             fileName[7] = i + '0';
@@ -121,13 +153,12 @@ void listenForWebClients(){
               if (i != MODULES) {
                 strcpy_P(buff, (char*)pgm_read_word(&(string_table[2])));
                 client.print(buff);              
-              } else {
-                strcpy_P(buff, (char*)pgm_read_word(&(string_table[3])));
-                client.print(buff);              
               }
             }
           }
-          
+          strcpy_P(buff, (char*)pgm_read_word(&(string_table[3])));
+          client.print(buff);              
+          */
           break;
         }
         if (c == '\n') {

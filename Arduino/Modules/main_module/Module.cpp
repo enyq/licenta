@@ -24,6 +24,7 @@ String Module::sendMessage(String msg, byte response){
   Wire.write(msg.c_str());
   Wire.endTransmission();
   String resp = "NO RESP";  // TODO: delete NO RESP from here
+  Serial.println("message was sent"); //TODO: Delete
   if (response == 1){
     delay(250);
     resp = getMessage();
@@ -39,21 +40,36 @@ String Module::getMessage(){
   while ((Wire.available()) && (msg_len++ <= I2C_MAX_MESSAGE_LENGTH)){
     msg += char(Wire.read());
   }
+  msg = stripEndingSpaces(msg);
   Serial.print("getMessage: "); // TODO: Clean up!!!
   Serial.println(msg);
   return msg;  
 }
 
 byte Module::ping(){
+  Serial.println("Pinging"); // TODO: Cleanup
   String msg = sendMessage("PING", 1);
-  if (msg[3] != '1') _pingRetries++;
-  else _pingRetries = 0;
-  if (msg[3] == '1'){ Serial.println("PINGED");return 1;} else{
-  Serial.println("NOT PINGED"); return  0; }
+  if (msg[3] != '1'){
+    _pingRetries++;
+    Serial.println("NOT PINGED"); 
+    return 0;
+  } else {
+    _pingRetries = 0;
+    Serial.println("PINGED");
+    return 1;
+  }
 }
 
 String Module::getInfo(){
   return sendMessage("GET", 1);
+}
+
+String Module::getSerial(){
+  return sendMessage("GET SN", 1);
+}
+
+String Module::getName(){
+  return sendMessage("GET NAME", 1);
 }
 
 byte Module::getType(){
@@ -77,4 +93,13 @@ void Module::setAddr(byte addr){
 //    else _respAddr = _addr;
     _addr = addr;
   }
+}
+
+String Module::stripEndingSpaces(String message){
+  if (message.length() == 0) return "";
+  byte i = message.length() - 1;
+  while ((message[i] == ' ') && (i > 0))i--;
+  String response = "";
+  for (byte j = 0; j <= i; j++) response += message[j];
+  return response;
 }

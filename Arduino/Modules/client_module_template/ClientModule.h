@@ -14,6 +14,9 @@
 
 #include "Arduino.h"
 
+extern const String SN;
+extern String NAME;
+
 class ClientModule{
   public:
     ClientModule(byte type, String (*gatherFunct)(void), void (*interpretFunct)(String), byte addr = 0);

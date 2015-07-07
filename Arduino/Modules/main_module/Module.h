@@ -24,10 +24,13 @@ class Module
     byte getType();
     byte getAddr();
     void setAddr(byte addr);
+    String getSerial();
+    String getName();    
     byte getRetries();
 //    String getMessage(); // TODO: move to private when finished testing
   private:
     String getMessage();
+    String stripEndingSpaces(String);    
     byte _addr;
     byte _respAddr;
     byte _type;

@@ -53,7 +53,14 @@ void ClientModule::receiveEvent(int length){
    while (0 < Wire.available()) msg += char(Wire.read());
    Serial.println(msg);
    if (msg.startsWith("PING")) RESPONSE = "XY#1";
-   else if (msg.startsWith("GET")) RESPONSE = _gatherInfo();
+   else if (msg.startsWith("GET SN")) RESPONSE = SN; 
+   else if (msg.startsWith("GET NAME")) RESPONSE = NAME;
+   else if (msg.startsWith("GET")) RESPONSE = _gatherInfo();   
+   else if (msg.startsWith("SET NAME")){
+     NAME = "";
+     for (byte i = 9; i < msg.length(); i++) NAME += msg[i];
+     RESPONSE = "ACK";
+   }
    else if (msg.startsWith("SET ADDR")){
        byte addr = 0;
        for (byte i = 0; i < msg.length(); i++){

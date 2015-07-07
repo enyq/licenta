@@ -10,12 +10,14 @@
 #include "Constants.h"
 #include "Module.h"
 #include "Logger.h"
+#include "RealTime.h"
+#include "SD.h"
 
 class ModuleManager
 {
   public:
     ModuleManager();
-    ModuleManager(Logger* logger);
+    ModuleManager(Logger* logger, RealTime* RTC);
     void init();
 //    String getMessage(String msg);
     String getInfo(byte moduleNumber);
@@ -32,6 +34,7 @@ class ModuleManager
     byte pingAll();
     byte _activeModules;
     Logger * _logger;
+    RealTime * _RTC;
 };
 
 #endif

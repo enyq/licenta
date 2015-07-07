@@ -16,8 +16,9 @@ ModuleManager::ModuleManager(){
   init();
 }
 
-ModuleManager::ModuleManager(Logger* logger){
+ModuleManager::ModuleManager(Logger* logger, RealTime* RTC){
   _logger = logger;
+  _RTC = RTC;
 //  init();
 }
 
@@ -77,24 +78,85 @@ void ModuleManager::moduleCleanUp(){
 
 // Will return 1 if there is a newly installed module
 byte ModuleManager::pingAll(){
+  Serial.println("_activeModules:" + (String)_activeModules);
   for (byte i = 1; i <= _activeModules; i++) _modules[i].ping();
   return _modules[0].ping();
 }
 
 // TODO: implement updateModules method
 void ModuleManager::updateModules(){
-  //_logger->info("UPDATE modules");
+  _logger->info("UPDATE modules");
   moduleCleanUp();
   _modules[0] = Module(110, 255);
   if (_modules[0].ping() == 1){ // We have a new module, will have to give it an address
     byte addr = ++_activeModules + I2C_MIN_ADDR;
-    //_logger->info("Adding new module to address: " + (String)addr);
+    _logger->info("Adding new module to address: " + (String)addr);
     _modules[0].sendMessage("SET ADDR " + (String)addr);
     _modules[_activeModules] = Module(addr, _modules[0].getType());
   }
   _logger->info("Act modules: " + String(_activeModules));
   for (byte i = 1; i <= _activeModules; i++){
+    String infoStr = _modules[i].getSerial();
+    _logger->info(infoStr);    
     _logger->info(_modules[i].getInfo());
+    
+    // If file exists, then write info to that file, if not, create a new data file
+    //serial = serial + ".jsn";
+    char filename[13];
+    (infoStr+".jsn").toCharArray(filename, (infoStr+".jsn").length() + 1);
+    char infoChr[33];
+    File myFile;
+    volatile bool fileExists = SD.exists(filename);
+    myFile = SD.open(filename, FILE_WRITE);    
+    extern char buff[50];    
+    strcpy_P(buff, (char*)pgm_read_word(&(string_table[2])));    
+    if (!fileExists) {
+      Serial.println("File not exists, will create it, and write a header to it");
+      myFile.write("\n");
+      myFile.write(buff);
+      myFile.write("\"SN\":");
+      myFile.write("\"");
+      infoStr.toCharArray(infoChr, infoStr.length() + 1);
+      myFile.write(infoChr);
+      myFile.write("\",\n");
+      myFile.write(buff);
+      myFile.write("\"Name\":");
+      myFile.write("\"");
+      infoStr = _modules[i].getName();
+      infoStr.toCharArray(infoChr, infoStr.length() + 1);
+      myFile.write(infoChr);
+      myFile.write("\",\n");
+      myFile.write(buff);
+      myFile.write("\"Data\":[\n");   
+    } else {
+      myFile.write(",\n");
+    }
+    myFile.write(buff);
+    myFile.write("{\n");
+    strcpy_P(buff, (char*)pgm_read_word(&(string_table[3])));
+    myFile.write(buff);
+    myFile.write("\"Time\": \"");
+    String info = _RTC->getDateTime();
+    info.toCharArray(infoChr, info.length() + 1);
+    myFile.write(infoChr);
+    myFile.write("\",\n");
+    myFile.write(buff);
+    myFile.write("\"Value\": \"");
+    info = _modules[i].getInfo();
+    info.toCharArray(infoChr, info.length() + 1);
+    myFile.write(infoChr);
+    myFile.write("\"\n");
+    strcpy_P(buff, (char*)pgm_read_word(&(string_table[2])));    
+    myFile.write(buff);
+    myFile.write("}");
+    myFile.close();    
+    
+
+//        Serial.println("File exists.");
+//        Serial.println("Creating example.txt...");
+//        myFile = SD.open("example.txt", FILE_WRITE);
+//        myFile.close();
+    
 //    _logger->info("Getting from " + (String)i + " addr " +  (String)_modules[i].getAddr() + " : " + (String)_modules[i].getInfo());
   }
 
@@ -122,4 +184,3 @@ void ModuleManager::updateModules(){
 byte ModuleManager::getModuleNumber(){
   return _activeModules;
 }
-
