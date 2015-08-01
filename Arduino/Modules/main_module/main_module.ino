@@ -39,8 +39,8 @@ RealTime RTC(40, 42, 44);
 
 // TODO: This info will be read from the SD card, but will be set from here for now
 byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x22 };
-IPAddress ip(192,168,1, 180);
-IPAddress gateway(192,168,1, 1);
+IPAddress ip(192,168,0, 180);
+IPAddress gateway(192,168,0, 1);
 IPAddress subnet(255, 255, 255, 0);
 EthernetServer server = EthernetServer(80);
 
