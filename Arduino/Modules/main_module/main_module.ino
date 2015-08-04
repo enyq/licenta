@@ -27,6 +27,7 @@
 #include <SD.h>
 #include "Logger.h"
 #include "RealTime.h"
+#include "CommandParser.h"
 
 //#include <RTC.h> // TODO: import correct RTC header file
 
@@ -36,6 +37,7 @@ StatusLed statusLed(1, 2, 3); // TODO: Set the correct values
 
 Logger logger(LOG_DEBUG);
 RealTime RTC(40, 42, 44);
+CommandParser commandParser(&logger);
 
 // TODO: This info will be read from the SD card, but will be set from here for now
 byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x22 };
@@ -111,6 +113,7 @@ void listenForWebClients(){
           Serial.println(parameters.indexOf('+'));
           Serial.println(parameters.indexOf('-'));
           Serial.println("PARAMETERS END");
+          commandParser.parse(parameters);
           // Send HTTP header
           strcpy_P(buff, (char*)pgm_read_word(&(string_table[0])));
           client.print(buff);
