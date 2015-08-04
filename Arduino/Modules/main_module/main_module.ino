@@ -39,10 +39,10 @@ RealTime RTC(40, 42, 44);
 
 // TODO: This info will be read from the SD card, but will be set from here for now
 byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x22 };
-IPAddress ip(192,168,0, 180);
+IPAddress ip(192,168,1, 180);
 IPAddress gateway(192,168,0, 1);
 IPAddress subnet(255, 255, 255, 0);
-EthernetServer server = EthernetServer(80);
+EthernetServer server = EthernetServer(1000);
 
 File myFile;
 
@@ -94,14 +94,23 @@ void loop() {
 // TODO: format sent data to something friendly
 void listenForWebClients(){
   EthernetClient client = server.available();
+  String parameters="";
+  String clientRequest;
   if (client) {
     // an http request ends with a blank line
     boolean currentLineIsBlank = true;
     while (client.connected()) {
       if (client.available()) {
         char c = client.read();
-        Serial.print(c);
+        clientRequest += c;        
+//        Serial.print(c);
         if (c == '\n' && currentLineIsBlank) {
+          Serial.print("PARAMETERS ARE: ");
+          Serial.println(parameters);
+          if (parameters == "") Serial.println("No parameters");
+          Serial.println(parameters.indexOf('+'));
+          Serial.println(parameters.indexOf('-'));
+          Serial.println("PARAMETERS END");
           // Send HTTP header
           strcpy_P(buff, (char*)pgm_read_word(&(string_table[0])));
           client.print(buff);
@@ -112,12 +121,11 @@ void listenForWebClients(){
 
           // Open JSON files for reading:
           
-          File root = SD.open("/");
+          File root = SD.open("/2122/00/29/");
           root.rewindDirectory();
           File jsonFile = root.openNextFile();
           bool noFiles = true;
-          
-          
+
           while (jsonFile){
             noFiles = false;
             while (jsonFile.available()) {
@@ -136,34 +144,18 @@ void listenForWebClients(){
           if (noFiles) strcpy_P(buff, (char*)pgm_read_word(&(string_table[6])));
           else strcpy_P(buff, (char*)pgm_read_word(&(string_table[5])));
           client.print(buff);
-    
-          /*char fileName[] = "00000000.jsn";
-          byte MODULES = 7;
-          for (byte i = 1; i <= MODULES; i++){
-            fileName[7] = i + '0';
-            myFile = SD.open(fileName);
-            if (myFile) {
-              // read from the file until there's nothing else in it:
-              while (myFile.available()) {
-                client.write(myFile.read());
-              }
-              // close the file:
-              myFile.close();
-              client.println();
-              if (i != MODULES) {
-                strcpy_P(buff, (char*)pgm_read_word(&(string_table[2])));
-                client.print(buff);              
-              }
-            }
-          }
-          strcpy_P(buff, (char*)pgm_read_word(&(string_table[3])));
-          client.print(buff);              
-          */
           break;
         }
         if (c == '\n') {
           // you're starting a new line
           currentLineIsBlank = true;
+          // Search and process parameters
+          if (clientRequest.startsWith("GET /GET") || clientRequest.startsWith("GET /POST")) {
+             for (int i = 5; i < clientRequest.length() - 11; i++){
+               parameters += clientRequest[i];
+             }
+             clientRequest = "";
+          }
         }
         else if (c != '\r') {
           // you've gotten a character on the current line

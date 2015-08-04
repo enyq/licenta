@@ -87,6 +87,18 @@ String RealTime::getDateTime(){
   return buffer;
 }
 
+String RealTime::getDate(){
+  String buffer = "";
+  
+  int months = getMonths();
+  int days = getDays();
+
+  buffer += (String)getYears() + "/" + (months < 10 ? "0" : "") +  (String)months + "/" + (days < 10 ? "0" : "") + (String)days;
+  
+  return buffer;
+}
+
+
 void RealTime::setTime(int seconds, int minutes, int hours, int dayOfWeek, int dayOfMonth, int month, int year){
   memset ((char *) &rtc, 0, sizeof(rtc));
 

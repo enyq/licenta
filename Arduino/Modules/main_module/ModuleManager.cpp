@@ -103,14 +103,22 @@ void ModuleManager::updateModules(){
     // If file exists, then write info to that file, if not, create a new data file
     //serial = serial + ".jsn";
     char filename[13];
+    char folderName[12];
+    String date = _RTC->getDate();
+    date.toCharArray(folderName, date.length() + 1); 
     (infoStr+".jsn").toCharArray(filename, (infoStr+".jsn").length() + 1);
     char infoChr[33];
+    char path[25];
     File myFile;
-    volatile bool fileExists = SD.exists(filename);
-    myFile = SD.open(filename, FILE_WRITE);    
+    sprintf(path, "%s/%s", folderName, filename);
+    Serial.print("PATH IS: "); //TODO: Remove this SHT
+    Serial.println(path); //TODO: This too
+    volatile bool fileExists = SD.exists(path);
+    myFile = SD.open(path, FILE_WRITE);    
     extern char buff[50];    
     strcpy_P(buff, (char*)pgm_read_word(&(string_table[2])));    
     if (!fileExists) {
+      SD.mkdir(folderName);
       Serial.println("File not exists, will create it, and write a header to it");
       myFile.write("\n");
       myFile.write(buff);

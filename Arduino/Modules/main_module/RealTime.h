@@ -68,6 +68,7 @@ class RealTime
     int getMonths();
     int getYears();
     String getDateTime();
+    String getDate();    
   private:
     byte _CLK, _DAT, _RST;
     void DS1302_write( int address, uint8_t data);
