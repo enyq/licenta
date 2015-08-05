@@ -8,6 +8,7 @@
 
 #include "Arduino.h"
 #include "Logger.h"
+#include "Command.h"
 #include "SD.h"
 
 class CommandParser
@@ -20,9 +21,7 @@ class CommandParser
     char read();
   private:
     Logger * _logger;
-    int startYear, endYear, startMonth, endMonth, startDay, endDay;
-    String moduleSN;
-    boolean validCommand;
+    Command *_command;
 };
 
 #endif

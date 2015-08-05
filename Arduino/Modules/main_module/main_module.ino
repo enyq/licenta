@@ -122,9 +122,16 @@ void listenForWebClients(){
           strcpy_P(buff, (char*)pgm_read_word(&(string_table[1])));
           client.print(buff);
 
+          // Get the data and write directly to the client from CommandParser
+
+          while (commandParser.available()){
+            client.write(commandParser.read());
+          }
+
+
           // Open JSON files for reading:
           
-          File root = SD.open("/2122/00/29/");
+          File root = SD.open("/2002/00/29/");
           root.rewindDirectory();
           File jsonFile = root.openNextFile();
           bool noFiles = true;
