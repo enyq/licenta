@@ -119,8 +119,8 @@ void listenForWebClients(){
           client.print(buff);
           client.println();
           // Send JSON header
-          strcpy_P(buff, (char*)pgm_read_word(&(string_table[1])));
-          client.print(buff);
+//          strcpy_P(buff, (char*)pgm_read_word(&(string_table[1])));
+//          client.print(buff);
 
           // Get the data and write directly to the client from CommandParser
 
@@ -131,7 +131,7 @@ void listenForWebClients(){
 
           // Open JSON files for reading:
           
-          File root = SD.open("/2002/00/29/");
+/*          File root = SD.open("/2002/00/29/");
           root.rewindDirectory();
           File jsonFile = root.openNextFile();
           bool noFiles = true;
@@ -153,7 +153,7 @@ void listenForWebClients(){
           // If there are no files on the SD card, the JSON file still has to be created correctly
           if (noFiles) strcpy_P(buff, (char*)pgm_read_word(&(string_table[6])));
           else strcpy_P(buff, (char*)pgm_read_word(&(string_table[5])));
-          client.print(buff);
+          client.print(buff);*/
           break;
         }
         if (c == '\n') {
