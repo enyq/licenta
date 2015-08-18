@@ -1,39 +1,34 @@
 package edu.licenta.eniko.sqlite.model;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+import edu.licenta.eniko.sqlite.HomeManagementDBContract;
 import edu.licenta.eniko.util.UnitsOfMeasurementEnum;
 
-
+@DatabaseTable(tableName = HomeManagementDBContract.ValueEntries.TABLE_NAME)
 public class Value {
 
+    @DatabaseField(generatedId = true)
     private int id;
+
+    @DatabaseField(columnName = HomeManagementDBContract.ValueEntries.COLUMN_NAME_NAME)
     private String name;
+
+    @DatabaseField(columnName = HomeManagementDBContract.ValueEntries.COLUMN_NAME_UM)
     private UnitsOfMeasurementEnum um;
 
-    public Value() {
+    Value() {
     }
 
-    public Value(int id) {
-        this.id = id;
-    }
-
-    public Value(int id, String name, UnitsOfMeasurementEnum um) {
-        this.id = id;
-        this.name = name;
+    public Value(UnitsOfMeasurementEnum um, String name) {
         this.um = um;
-    }
-
-    public Value(String name, UnitsOfMeasurementEnum um) {
         this.name = name;
-        this.um = um;
     }
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int id) { this.id = id; }
 
     public String getName() {
         return name;

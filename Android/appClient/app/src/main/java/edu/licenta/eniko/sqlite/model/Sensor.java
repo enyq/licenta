@@ -1,43 +1,51 @@
 package edu.licenta.eniko.sqlite.model;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+import edu.licenta.eniko.sqlite.HomeManagementDBContract;
+
 /**
  * Created by Eniko on 6/14/2015.
  */
+
+@DatabaseTable(tableName = HomeManagementDBContract.SensorEntries.TABLE_NAME)
 public class Sensor {
 
+    @DatabaseField(generatedId = true)
     private int id;
+
+    @DatabaseField(foreign = true, columnName = HomeManagementDBContract.SensorEntries.COLUMN_NAME_ROOM_ID)
     private Room room;
 
+    @DatabaseField(foreign = true, columnName = HomeManagementDBContract.SensorEntries.COLUMN_NAME_VALUE_ID)
+    private Value value;
 
-    public Sensor() {
+    Sensor() {
     }
 
-    public Sensor(int id) {
-        this.id = id;
-    }
-
-    public Sensor(Room room) {
+    public Sensor(Room room, Value value) {
         this.room = room;
+        this.value = value;
     }
 
-    public Sensor(int id, Room room) {
-        this.id = id;
-        this.room = room;
-    }
+    public int getId() { return id; }
 
-    public int getId() {
-        return id;
-    }
+    public void setId(int id) { this.id = id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public Sensor( Room room) { this.room = room; }
 
-    public Room getRoom() {
-        return room;
-    }
+    public Room getRoom() { return room; }
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public Value getValue() {
+        return value;
+    }
+
+    public void setValue(Value value) {
+        this.value = value;
     }
 }

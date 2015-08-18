@@ -20,6 +20,7 @@ public final class HomeManagementDBContract {
     /* Inner class that defines the table contents */
     public static abstract class ModuleEntries implements BaseColumns {
         public static final String TABLE_NAME = "module";
+        public static final String COLUMN_NAME_SERIAL_NUMBER = "serialNumber";
     }
 
     public static abstract class ValueEntries implements BaseColumns {
@@ -33,7 +34,7 @@ public final class HomeManagementDBContract {
     public static abstract class SensorEntries implements BaseColumns {
         public static final String TABLE_NAME = "sensor";
         public static final String COLUMN_NAME_ROOM_ID = "roomid";
-
+        public static final String COLUMN_NAME_VALUE_ID = "valueid";
     }
 
     /* Inner class that defines the table contents */
@@ -49,7 +50,6 @@ public final class HomeManagementDBContract {
         public static final String COLUMN_NAME_VALUE = "value";
         public static final String COLUMN_NAME_DATE = "date";
         public static final String COLUMN_NAME_SENSOR_ID = "sensorid";
-        public static final String COLUMN_NAME_VALUE_ID = "valueid";
     }
 
 }

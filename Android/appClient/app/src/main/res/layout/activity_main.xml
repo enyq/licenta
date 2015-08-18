@@ -5,58 +5,59 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/tvIsConnected"
+        android:id="@+id/temp"
+        android:maxLines = "7000"
+        android:scrollbars = "vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="#FF0000"
+        android:background="#000000"
         android:textColor="#FFF"
         android:textSize="18dp"
-        android:layout_marginBottom="5dp"
-        android:text="is connected? " />
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Incalzire"
-        android:padding="8dip" />
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:stretchColumns="0,1"
-        android:id="@+id/heat_table" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="match_parent">
-    </TableLayout>
+        android:layout_marginBottom="5dp" />
+    <!--<TextView-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Incalzire"-->
+        <!--android:padding="8dip" />-->
+    <!--<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:stretchColumns="0,1"-->
+        <!--android:id="@+id/heat_table" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="match_parent">-->
+    <!--</TableLayout>-->
 
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Aerisire"
-        android:padding="8dip" />
+    <!--<TextView-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Aerisire"-->
+        <!--android:padding="8dip" />-->
 
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:stretchColumns="0,1"
-        android:id="@+id/air_table" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="match_parent">
-    </TableLayout>
+    <!--<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:stretchColumns="0,1"-->
+        <!--android:id="@+id/air_table" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="match_parent">-->
+    <!--</TableLayout>-->
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Luminozitate"
-        android:padding="8dip" />
+    <!--<TextView-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Luminozitate"-->
+        <!--android:padding="8dip" />-->
 
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:stretchColumns="0,1"
-        android:id="@+id/lighting_table" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="match_parent">
-    </TableLayout>
+    <!--<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:stretchColumns="0,1"-->
+        <!--android:id="@+id/lighting_table" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="match_parent">-->
+    <!--</TableLayout>-->
 
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Siguranta"
-        android:padding="8dip" />
+    <!--<TextView-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Siguranta"-->
+        <!--android:padding="8dip" />-->
 
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:stretchColumns="0,1"
-        android:id="@+id/security_table" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="match_parent">
-    </TableLayout>
+    <!--<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:stretchColumns="0,1"-->
+        <!--android:id="@+id/security_table" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="match_parent">-->
+    <!--</TableLayout>-->
 
 </LinearLayout>
