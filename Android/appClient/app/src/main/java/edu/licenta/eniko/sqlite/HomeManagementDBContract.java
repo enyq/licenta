@@ -46,7 +46,7 @@ public final class HomeManagementDBContract {
 
 
     public static abstract class ValueToSensorEntries implements BaseColumns {
-        public static final String TABLE_NAME = "value_to_sensor";
+        public static final String TABLE_NAME = "value_of_sensor";
         public static final String COLUMN_NAME_VALUE = "value";
         public static final String COLUMN_NAME_DATE = "date";
         public static final String COLUMN_NAME_SENSOR_ID = "sensorid";
