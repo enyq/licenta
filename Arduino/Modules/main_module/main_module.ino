@@ -113,26 +113,25 @@ void listenForWebClients(){
           Serial.println(parameters.indexOf('+'));
           Serial.println(parameters.indexOf('-'));
           Serial.println("PARAMETERS END");
-//          commandParser.parse(parameters);            //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+          commandParser.parse(parameters);
           // Send HTTP header
           strcpy_P(buff, (char*)pgm_read_word(&(string_table[0])));
           client.print(buff);
           client.println();
           // Send JSON header
-          strcpy_P(buff, (char*)pgm_read_word(&(string_table[1])));           //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
-          client.print(buff);          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+//          strcpy_P(buff, (char*)pgm_read_word(&(string_table[1])));
+//          client.print(buff);
 
           // Get the data and write directly to the client from CommandParser
 
-//          while (commandParser.available()){          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
-//            client.write(commandParser.read());          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
-//          }          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+          while (commandParser.available()){
+            client.write(commandParser.read());
+          }
 
 
           // Open JSON files for reading:
           
-          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
-          File root = SD.open("/2002/00/29/"); // <- Ezt mododsitsd aszerint, hogy milyen datum van
+/*          File root = SD.open("/2002/00/29/");
           root.rewindDirectory();
           File jsonFile = root.openNextFile();
           bool noFiles = true;
@@ -154,8 +153,7 @@ void listenForWebClients(){
           // If there are no files on the SD card, the JSON file still has to be created correctly
           if (noFiles) strcpy_P(buff, (char*)pgm_read_word(&(string_table[6])));
           else strcpy_P(buff, (char*)pgm_read_word(&(string_table[5])));
-          client.print(buff);
-          // END - REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+          client.print(buff);*/
           break;
         }
         if (c == '\n') {
