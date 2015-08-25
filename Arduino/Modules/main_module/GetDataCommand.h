@@ -24,6 +24,8 @@ private:
   boolean noFiles = false;
   char getChar();
   char getHeader();
+  char getFooter();
+  char getConnectionTag();  
   char charBuff[50];
   boolean nextFile();
   int status = 0;

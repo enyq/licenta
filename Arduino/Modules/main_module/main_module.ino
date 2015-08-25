@@ -86,7 +86,7 @@ void setup() {
 void loop() {
 //  logger.info("LOOP");
   listenForWebClients();
-  moduleMgr.updateModules();
+  //moduleMgr.updateModules();
   //statusLed.update();
   //logger.info(moduleMgr.getInfo(0));
 //  moduleMgr.updateModules();
@@ -109,53 +109,54 @@ void listenForWebClients(){
         if (c == '\n' && currentLineIsBlank) {
           Serial.print("PARAMETERS ARE: ");
           Serial.println(parameters);
-          if (parameters == "") Serial.println("No parameters");
-          Serial.println(parameters.indexOf('+'));
-          Serial.println(parameters.indexOf('-'));
+          //if (parameters == "") Serial.println("No parameters");
+//          Serial.println(parameters.indexOf('+'));
+//          Serial.println(parameters.indexOf('-'));
           Serial.println("PARAMETERS END");
-//          commandParser.parse(parameters);            //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+          if (parameters != "") commandParser.parse(parameters);            //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
           // Send HTTP header
           strcpy_P(buff, (char*)pgm_read_word(&(string_table[0])));
           client.print(buff);
           client.println();
           // Send JSON header
-          strcpy_P(buff, (char*)pgm_read_word(&(string_table[1])));           //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
-          client.print(buff);          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+//          strcpy_P(buff, (char*)pgm_read_word(&(string_table[1])));           //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+//          client.print(buff);          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
 
           // Get the data and write directly to the client from CommandParser
-
-//          while (commandParser.available()){          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
-//            client.write(commandParser.read());          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
-//          }          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+          Serial.println("Now getting data from command parser");
+          while (commandParser.available()){          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+            client.write(commandParser.read());          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+          }          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
 
 
           // Open JSON files for reading:
           
           //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
-          File root = SD.open("/2002/00/29/"); // <- Ezt mododsitsd aszerint, hogy milyen datum van
-          root.rewindDirectory();
-          File jsonFile = root.openNextFile();
-          bool noFiles = true;
+//          File root = SD.open("/2002/01/29/"); // <- Ezt mododsitsd aszerint, hogy milyen datum van
+//          root.rewindDirectory();
+//          File jsonFile = root.openNextFile();
+//          bool noFiles = true;
 
-          while (jsonFile){
-            noFiles = false;
-            while (jsonFile.available()) {
-              client.write(jsonFile.read());
-            }
+//          while (jsonFile){
+//            noFiles = false;
+//            while (jsonFile.available()) {
+//              client.write(jsonFile.read());
+//            }
             // close the file:
-            jsonFile.close();            
-            client.println();            
-            jsonFile = root.openNextFile();
-            if (jsonFile) {
-              strcpy_P(buff, (char*)pgm_read_word(&(string_table[4])));
-              client.print(buff);                            
-            }
-          }
+//            jsonFile.close();            
+//            client.println();            
+//            jsonFile = root.openNextFile();
+//            if (jsonFile) {
+//              strcpy_P(buff, (char*)pgm_read_word(&(string_table[4])));
+//              client.print(buff);                            
+//            }
+//          }
           // If there are no files on the SD card, the JSON file still has to be created correctly
-          if (noFiles) strcpy_P(buff, (char*)pgm_read_word(&(string_table[6])));
-          else strcpy_P(buff, (char*)pgm_read_word(&(string_table[5])));
-          client.print(buff);
+//          if (noFiles) strcpy_P(buff, (char*)pgm_read_word(&(string_table[6])));
+//          else strcpy_P(buff, (char*)pgm_read_word(&(string_table[5])));
+//          client.print(buff);
           // END - REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+          clientRequest = "";
           break;
         }
         if (c == '\n') {

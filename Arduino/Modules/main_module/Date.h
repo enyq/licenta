@@ -13,12 +13,16 @@ public:
   Date(int, int, int);
   Date(String);
   Date();
-  Date operator++(int);
+//  Date operator++(int);
+  void inc();
   Date& operator=(const Date &a);  
   boolean operator>(Date);
   boolean operator>=(Date);
-  boolean operator<(Date);  
-  boolean operator<=(Date);  
+  boolean smallerThan(Date*);  
+  boolean operator<=(Date);
+  int getYear();
+  int getMonth();
+  int getDay();
   String toStr();
 private:
   int _y, _m, _d;
