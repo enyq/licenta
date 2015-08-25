@@ -1,0 +1,14 @@
+#
+# generated on 2015/08/12 09:19:40
+#
+# --table-start--
+dataClass=edu.licenta.eniko.sqlite.model.BaseEntity
+tableName=baseentity
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

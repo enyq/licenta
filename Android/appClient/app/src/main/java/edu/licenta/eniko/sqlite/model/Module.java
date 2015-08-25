@@ -1,74 +1,43 @@
 package edu.licenta.eniko.sqlite.model;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.util.Date;
+
+import edu.licenta.eniko.sqlite.HomeManagementDBContract;
 
 /**
  * Created by Eniko on 6/11/2015.
  */
+
+@DatabaseTable(tableName = HomeManagementDBContract.ModuleEntries.TABLE_NAME)
 public class Module {
 
-    private String id;
-   // private String value;
- //   private Date received_at;
-  //  private Room room;
-   // private ModuleType type;
+    @DatabaseField(generatedId = true)
+    private int id;
 
-    public Module() {
+    @DatabaseField(columnName = HomeManagementDBContract.ModuleEntries.COLUMN_NAME_SERIAL_NUMBER, canBeNull = false)
+    private String serialNumber;
+
+    Module() {
     }
 
-//    public Module(String value, Date received_at, Room room, ModuleType type) {
-//        this.value = value;
-//        this.received_at = received_at;
-//        this.room = room;
-//        this.type = type;
-//    }
-//
-    public Module(String id){
-        //, String value, Date received_at, Room room, ModuleType type) {
-        this.id = id;
-//        this.value = value;
-//        this.received_at = received_at;
-//        this.room = room;
-//        this.type = type;
+    public Module(String serialNumber){
+        super();
+        this.serialNumber = serialNumber;
     }
 
-    public String getId() {
-        return id;
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
+
+    public String getSerialNumber() {
+        return serialNumber;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
-//    public String getValue() {
-//        return value;
-//    }
-//
-//    public void setValue(String value) {
-//        this.value = value;
-//    }
-//
-//    public Date getReceived_at() {
-//        return received_at;
-//    }
-//
-//    public void setReceived_at(Date received_at) {
-//        this.received_at = received_at;
-//    }
-//
-//    public Room getRoom() {
-//        return room;
-//    }
-//
-//    public void setRoom(Room room) {
-//        this.room = room;
-//    }
-//
-//    public ModuleType getType() {
-//        return type;
-//    }
-//
-//    public void setType(ModuleType type) {
-//        this.type = type;
-//    }
 }
