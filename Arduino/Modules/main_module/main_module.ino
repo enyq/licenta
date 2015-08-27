@@ -53,7 +53,7 @@ char buff[50];
 // Will use a 8 byte serial number, although it is not like the UUID, the probability to have the same S/n's is 1:18446744073709551616. 
 // It could be assured from factory, that there will be no duplicates
 
-ModuleManager moduleMgr(&logger, &RTC);
+ModuleManager moduleMgr;
 
 void setup() {
   logger.init();
@@ -64,6 +64,9 @@ void setup() {
 
   RTC.init();               // Initialize RTC module
 
+  moduleMgr = ModuleManager::getInstance();
+  moduleMgr.setLogger(&logger);
+  moduleMgr.setRTC(&RTC);
   pinMode(10, OUTPUT);      // Hardware SS pin (DO NOT CHANGE)
   Serial.print("Time&date is: ");
   Serial.println(RTC.getDateTime());
@@ -89,7 +92,7 @@ void loop() {
   //moduleMgr.updateModules();
   //statusLed.update();
   //logger.info(moduleMgr.getInfo(0));
-//  moduleMgr.updateModules();
+  moduleMgr.updateModules();
   delay(5000);
 }
 
