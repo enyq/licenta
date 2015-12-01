@@ -53,7 +53,7 @@ char buff[50];
 // Will use a 8 byte serial number, although it is not like the UUID, the probability to have the same S/n's is 1:18446744073709551616. 
 // It could be assured from factory, that there will be no duplicates
 
-ModuleManager moduleMgr(&logger, &RTC);
+ModuleManager moduleMgr;
 
 void setup() {
   logger.init();
@@ -64,6 +64,9 @@ void setup() {
 
   RTC.init();               // Initialize RTC module
 
+  moduleMgr = ModuleManager::getInstance();
+  moduleMgr.setLogger(&logger);
+  moduleMgr.setRTC(&RTC);
   pinMode(10, OUTPUT);      // Hardware SS pin (DO NOT CHANGE)
   Serial.print("Time&date is: ");
   Serial.println(RTC.getDateTime());
@@ -86,10 +89,10 @@ void setup() {
 void loop() {
 //  logger.info("LOOP");
   listenForWebClients();
-  moduleMgr.updateModules();
+  //moduleMgr.updateModules();
   //statusLed.update();
   //logger.info(moduleMgr.getInfo(0));
-//  moduleMgr.updateModules();
+  moduleMgr.updateModules();
   delay(5000);
 }
 
@@ -109,16 +112,21 @@ void listenForWebClients(){
         if (c == '\n' && currentLineIsBlank) {
           Serial.print("PARAMETERS ARE: ");
           Serial.println(parameters);
-          if (parameters == "") Serial.println("No parameters");
-          Serial.println(parameters.indexOf('+'));
-          Serial.println(parameters.indexOf('-'));
+          //if (parameters == "") Serial.println("No parameters");
+//          Serial.println(parameters.indexOf('+'));
+//          Serial.println(parameters.indexOf('-'));
           Serial.println("PARAMETERS END");
+<<<<<<< HEAD
           commandParser.parse(parameters);
+=======
+          if (parameters != "") commandParser.parse(parameters);            //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+>>>>>>> origin/master
           // Send HTTP header
           strcpy_P(buff, (char*)pgm_read_word(&(string_table[0])));
           client.print(buff);
           client.println();
           // Send JSON header
+<<<<<<< HEAD
 //          strcpy_P(buff, (char*)pgm_read_word(&(string_table[1])));
 //          client.print(buff);
 
@@ -127,10 +135,21 @@ void listenForWebClients(){
           while (commandParser.available()){
             client.write(commandParser.read());
           }
+=======
+//          strcpy_P(buff, (char*)pgm_read_word(&(string_table[1])));           //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+//          client.print(buff);          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+
+          // Get the data and write directly to the client from CommandParser
+          Serial.println("Now getting data from command parser");
+          while (commandParser.available()){          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+            client.write(commandParser.read());          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+          }          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+>>>>>>> origin/master
 
 
           // Open JSON files for reading:
           
+<<<<<<< HEAD
 /*          File root = SD.open("/2002/00/29/");
           root.rewindDirectory();
           File jsonFile = root.openNextFile();
@@ -141,19 +160,40 @@ void listenForWebClients(){
             while (jsonFile.available()) {
               client.write(jsonFile.read());
             }
+=======
+          //REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+//          File root = SD.open("/2002/01/29/"); // <- Ezt mododsitsd aszerint, hogy milyen datum van
+//          root.rewindDirectory();
+//          File jsonFile = root.openNextFile();
+//          bool noFiles = true;
+
+//          while (jsonFile){
+//            noFiles = false;
+//            while (jsonFile.available()) {
+//              client.write(jsonFile.read());
+//            }
+>>>>>>> origin/master
             // close the file:
-            jsonFile.close();            
-            client.println();            
-            jsonFile = root.openNextFile();
-            if (jsonFile) {
-              strcpy_P(buff, (char*)pgm_read_word(&(string_table[4])));
-              client.print(buff);                            
-            }
-          }
+//            jsonFile.close();            
+//            client.println();            
+//            jsonFile = root.openNextFile();
+//            if (jsonFile) {
+//              strcpy_P(buff, (char*)pgm_read_word(&(string_table[4])));
+//              client.print(buff);                            
+//            }
+//          }
           // If there are no files on the SD card, the JSON file still has to be created correctly
+<<<<<<< HEAD
           if (noFiles) strcpy_P(buff, (char*)pgm_read_word(&(string_table[6])));
           else strcpy_P(buff, (char*)pgm_read_word(&(string_table[5])));
           client.print(buff);*/
+=======
+//          if (noFiles) strcpy_P(buff, (char*)pgm_read_word(&(string_table[6])));
+//          else strcpy_P(buff, (char*)pgm_read_word(&(string_table[5])));
+//          client.print(buff);
+          // END - REVERTED AS BREAKS FUNCTIONALITY AT THIS MOMENT
+          clientRequest = "";
+>>>>>>> origin/master
           break;
         }
         if (c == '\n') {

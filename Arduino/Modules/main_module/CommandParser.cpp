@@ -7,6 +7,7 @@
 #include "Arduino.h"
 #include "CommandParser.h"
 #include "GetDataCommand.h"
+#include "PostDataCommand.h"
 #include "WipeCommand.h"
 #include "Logger.h"
 #include "SD.h"
@@ -21,6 +22,9 @@ void CommandParser::parse(String command){
   if (_command != NULL) delete _command; 
   if (command.startsWith("GETDATA=")){
     _command = new GetDataCommand(_logger);
+    _command->parse(command);
+  } else if (command.startsWith("POST=DATA")) {
+    _command = new PostDataCommand(_logger);
     _command->parse(command);
   } else if (command.startsWith("POST=WIPE")){
     _command = new WipeCommand(_logger);

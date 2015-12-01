@@ -19,8 +19,9 @@ Date::Date(String date){
   _d = (date[8] - '0') * 10 + (date[9] - '0');
 }
 
-Date Date::operator++(int){
-  Date x(_y, _m, _d);
+//Date& Date::operator++(){
+void Date::inc() {
+  //Date x(_y, _m, _d);
   _d++;
   
   if (((_d > 31) && ((_m == 1) || (_m == 3) || (_m == 5) || (_m == 7) || (_m == 8) || (_m == 10) || (_m ==12))) || ((_d > 30) && ((_m == 4) || (_m == 6) || (_m == 9) || (_m == 11)))){
@@ -39,13 +40,27 @@ Date Date::operator++(int){
     _y++;
     _m = 1;
   }
-  return x;
+  //return x;
+//  return *this;
 }
 
-boolean Date::operator<(const Date a){
+int Date::getYear() { return _y; }
+int Date::getMonth() { return _m; }
+int Date::getDay() { return _d; }
+
+
+boolean Date::smallerThan(Date* a){
+/*  return (_y < a->_y) || 
+         ((_y == a->_y) && ((_m < a->_m) || 
+         ((_m == a->_m) && (_d < a->_d))));*/
+  if (_y < a->getYear()) return true;
+  if ((_y == a->getYear()) && (_m < a->getMonth())) return true;
+  if ((_y == a->getYear()) && (_m == a->getMonth()) && (_d < a->getDay())) return true;
+  return false;
+  /*
   return (_y < a._y) || 
          ((_y == a._y) && ((_m < a._m) || 
-         ((_m == a._m) && (_d < a._d))));
+         ((_m == a._m) && (_d < a._d))));*/
 }
 
 boolean Date::operator<=(const Date a){

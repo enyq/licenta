@@ -16,16 +16,20 @@
 class ModuleManager
 {
   public:
-    ModuleManager();
-    ModuleManager(Logger* logger, RealTime* RTC);
     void init();
 //    String getMessage(String msg);
+    void sendToModule(String moduleSN, String msg);
     String getInfo(byte moduleNumber);
     void updateModules();
     byte getModuleNumber();
+    static ModuleManager& getInstance();
 //    byte getType();
 //    byte getAddr();
+    void setLogger(Logger *logger);
+    void setRTC(RealTime *RTC);
   private:
+    //ModuleManager();
+//    ModuleManager(Logger* logger, RealTime* RTC);
 //    void init();
     Module _modules[MAX_MODULES_NUMBER];
     void loadModules();
@@ -35,6 +39,7 @@ class ModuleManager
     byte _activeModules;
     Logger * _logger;
     RealTime * _RTC;
+    static ModuleManager *_instance;
 };
 
 #endif

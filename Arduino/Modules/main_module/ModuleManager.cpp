@@ -12,18 +12,38 @@
 #include "Logger.h"
 #include "EEPROM.h"
 
-ModuleManager::ModuleManager(){
-  init();
+ModuleManager *ModuleManager::_instance = 0;
+
+ModuleManager& ModuleManager::getInstance() {
+  if (!_instance) _instance = new ModuleManager();
+  return *_instance;
 }
 
-ModuleManager::ModuleManager(Logger* logger, RealTime* RTC){
-  _logger = logger;
-  _RTC = RTC;
+//ModuleManager::ModuleManager(){
 //  init();
+//}
+
+void ModuleManager::setLogger(Logger* logger) {
+  _logger = logger;
 }
 
-void ModuleManager::init(){
-    loadModules();
+void ModuleManager::setRTC(RealTime* RTC){
+  _RTC = RTC;
+}
+
+//void ModuleManager::init(){
+//    loadModules();
+//}
+
+void ModuleManager::sendToModule(String moduleSN, String msg) {
+  Serial.println("Sending MESSAGE to module, total active modules: " + (String)_activeModules);
+  for (int i = 1; i <= _activeModules; i++) {
+    Serial.println("Trying modules: " + _modules[i].getSerial());
+    if (_modules[i].getSerial() == moduleSN) {
+      Serial.println("Sending message: " + msg + "  to: " + moduleSN);
+      _modules[i].sendMessage(msg);
+    }
+  }
 }
 
 String ModuleManager::getInfo(byte moduleNumber){
