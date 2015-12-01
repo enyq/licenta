@@ -21,12 +21,18 @@ public class Sensor {
     @DatabaseField(foreign = true, columnName = HomeManagementDBContract.SensorEntries.COLUMN_NAME_VALUE_ID)
     private Value value;
 
-    Sensor() {
+    @DatabaseField(foreign = true, columnName = HomeManagementDBContract.SensorEntries.COLUMN_NAME_MODULE_ID)
+    private Module module;
+
+
+
+    public Sensor() {
     }
 
-    public Sensor(Room room, Value value) {
+    public Sensor(Room room, Value value, Module module) {
         this.room = room;
         this.value = value;
+        this.module = module;
     }
 
     public int getId() { return id; }
@@ -47,5 +53,13 @@ public class Sensor {
 
     public void setValue(Value value) {
         this.value = value;
+    }
+
+    public Module getModule() {
+        return module;
+    }
+
+    public void setModule(Module module) {
+        this.module = module;
     }
 }

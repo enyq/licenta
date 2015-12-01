@@ -16,12 +16,12 @@ public class Value {
     private String name;
 
     @DatabaseField(columnName = HomeManagementDBContract.ValueEntries.COLUMN_NAME_UM)
-    private UnitsOfMeasurementEnum um;
+    private String um;
 
-    Value() {
+    public Value() {
     }
 
-    public Value(UnitsOfMeasurementEnum um, String name) {
+    public Value(String um, String name) {
         this.um = um;
         this.name = name;
     }
@@ -38,11 +38,11 @@ public class Value {
         this.name = name;
     }
 
-    public UnitsOfMeasurementEnum getUm() {
+    public String getUm() {
         return um;
     }
 
-    public void setUm(UnitsOfMeasurementEnum um) {
+    public void setUm(String um) {
         this.um = um;
     }
 }

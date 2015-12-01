@@ -35,6 +35,7 @@ public final class HomeManagementDBContract {
         public static final String TABLE_NAME = "sensor";
         public static final String COLUMN_NAME_ROOM_ID = "roomid";
         public static final String COLUMN_NAME_VALUE_ID = "valueid";
+        public static final String COLUMN_NAME_MODULE_ID = "moduleid";
     }
 
     /* Inner class that defines the table contents */

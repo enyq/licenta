@@ -16,7 +16,7 @@ public class Converter {
 
         Date date = null;
 
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS");
+        DateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
         try {
             date = format.parse(stringDate);
         } catch (ParseException e) {

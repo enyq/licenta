@@ -20,7 +20,7 @@ public class Module {
     @DatabaseField(columnName = HomeManagementDBContract.ModuleEntries.COLUMN_NAME_SERIAL_NUMBER, canBeNull = false)
     private String serialNumber;
 
-    Module() {
+    public Module() {
     }
 
     public Module(String serialNumber){

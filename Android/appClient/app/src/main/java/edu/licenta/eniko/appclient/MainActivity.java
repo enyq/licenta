@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,9 +20,8 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import edu.licenta.eniko.sqlite.helper.DatabaseHelper;
+import edu.licenta.eniko.sqlite.helper.DatabaseHelper2;
 import edu.licenta.eniko.sqlite.model.Room;
 import edu.licenta.eniko.sqlite.model.Module;
 import edu.licenta.eniko.sqlite.model.Sensor;
@@ -32,10 +30,10 @@ import edu.licenta.eniko.sqlite.model.Value;
 import edu.licenta.eniko.sqlite.model.ValueOfSensor;
 import edu.licenta.eniko.util.UnitsOfMeasurementEnum;
 
-public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
+public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper2> {
 
 
-   // DatabaseHelperOld dbh;
+   // DatabaseHelper dbh;
     EditText etResponse;
     TextView tvIsConnected;
     TextView temp, moduleid;
@@ -53,7 +51,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-      //  dbh = new DatabaseHelperOld(getApplicationContext());
+      //  dbh = new DatabaseHelper(getApplicationContext());
 
 //        dbh.createRoom(new Room(2,"Kitchen"));
 //        dbh.createRoom(new Room(3,"Bedroom"));
@@ -273,21 +271,21 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
             sb.append(sensorToModule3).append('\n');
 
 
-            Value value = new Value(UnitsOfMeasurementEnum.CELSIUS, "temperature");
+            Value value = new Value("CELSIUS", "temperature");
             valueDao.create(value);
             Log.i(LOG_TAG, "created value(" + value.getId() + ")");
             // output it
             sb.append('#').append(value.getId()).append(": ");
             sb.append(value).append('\n');
 
-            Value value2 = new Value(UnitsOfMeasurementEnum.CANDELA, "light");
+            Value value2 = new Value("CANDELA", "light");
             valueDao.create(value2);
             Log.i(LOG_TAG, "created value(" + value2.getId() + ")");
             // output it
             sb.append('#').append(value2.getId()).append(": ");
             sb.append(value2).append('\n');
 
-            Value value3 = new Value(UnitsOfMeasurementEnum.PERCENT, "movement");
+            Value value3 = new Value("PERCENT", "movement");
             valueDao.create(value3);
             Log.i(LOG_TAG, "created value(" + value3.getId() + ")");
             // output it
@@ -343,7 +341,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 //
 //        return result;
 //    }
-//    public static String GET(String urlString, DatabaseHelperOld dbh){
+//    public static String GET(String urlString, DatabaseHelper dbh){
 //        InputStream inputStream = null;
 //        String result = "";
 //        try {
@@ -483,7 +481,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 //    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
 //        @Override
 //        protected String doInBackground(String... urls) {
-//            DatabaseHelperOld dbh = new DatabaseHelperOld(getApplicationContext());
+//            DatabaseHelper dbh = new DatabaseHelper(getApplicationContext());
 //
 //            return GET(urls[0],dbh);
 //        }
@@ -496,7 +494,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 ////           if (modules != null && modules.size()!=0) {
 ////               // createUI(modules);
 ////               for (Module m : modules){
-////                   DatabaseHelperOld db = new DatabaseHelperOld(
+////                   DatabaseHelper db = new DatabaseHelper(
 ////                           getApplicationContext());
 ////
 ////                   // inserting new label into database

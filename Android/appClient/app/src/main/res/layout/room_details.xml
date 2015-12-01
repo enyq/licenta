@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+    <!--<TextView-->
+        <!--android:id="@+id/valueLabel"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:lines="1"-->
+        <!--android:text="@+id/tvValue"-->
+        <!--android:textSize="24dp"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_marginTop="31dp">-->
+    <!--</TextView>-->
+    <!--<EditText-->
+        <!--android:id="@+id/todo_edit_description"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="top" >-->
+    <!--</EditText>-->
+
+
+    <!--<TextView-->
+        <!--android:id="@+id/dateLabel"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:lines="1"-->
+        <!--android:text="@+id/tvDate">-->
+    <!--</TextView>-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/dataLabel"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:lines="1"-->
+        <!--android:text="@+id/tvData">-->
+    <!--</TextView>-->
+
+
+    <!--<TextView-->
+        <!--android:id="@+id/uMLabel"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:lines="1"-->
+        <!--android:text="@+id/tvUM"-->
+        <!--android:layout_marginTop="46dp"-->
+        <!--android:layout_marginLeft="40dp"-->
+        <!--android:layout_marginStart="40dp">-->
+    <!--</TextView>-->
+
+    <!--<Spinner-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/spinner"-->
+        <!--android:layout_marginLeft="42dp"-->
+        <!--android:layout_marginStart="42dp"-->
+        <!--android:layout_marginTop="47dp" />-->
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/button"/>-->
+
+</LinearLayout>

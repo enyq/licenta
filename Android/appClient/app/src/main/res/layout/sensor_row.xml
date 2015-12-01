@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/valueLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:text="@+id/tvValue"
+        android:textSize="24dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="31dp">
+    </TextView>
+
+
+
+    <TextView
+        android:id="@+id/dateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:text="@+id/tvDate"
+        android:textSize="24dp"
+        android:layout_below="@+id/valueLabel"
+        android:layout_alignParentEnd="true">
+    </TextView>
+
+    <TextView
+        android:id="@+id/dataLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:text="@+id/tvData"
+        android:textSize="24dp"
+        android:layout_above="@+id/spinner"
+        android:layout_alignLeft="@+id/spinner"
+        android:layout_alignStart="@+id/spinner">
+    </TextView>
+
+
+    <TextView
+        android:id="@+id/uMLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:text="@+id/tvUM"
+        android:textSize="24dp"
+        android:layout_marginTop="46dp"
+        android:layout_below="@+id/dateLabel"
+        android:layout_toRightOf="@+id/valueLabel"
+        android:layout_toEndOf="@+id/valueLabel"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp">
+    </TextView>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_below="@+id/uMLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="42dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="47dp"
+        android:layout_toLeftOf="@+id/uMLabel"
+        android:layout_toStartOf="@+id/uMLabel" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set"
+        android:id="@+id/button"
+        android:layout_alignTop="@+id/spinner"
+        android:layout_alignLeft="@+id/uMLabel"
+        android:layout_alignStart="@+id/uMLabel"
+        android:layout_alignRight="@+id/uMLabel"
+        android:layout_alignEnd="@+id/uMLabel" />
+
+</RelativeLayout>

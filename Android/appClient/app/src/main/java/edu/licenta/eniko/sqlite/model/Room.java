@@ -18,7 +18,7 @@ public class Room {
     @DatabaseField(columnName = HomeManagementDBContract.RoomEntries.COLUMN_NAME_NAME)
     private String name;
 
-    Room() {
+    public Room() {
     }
 
     public int getId() { return id; }

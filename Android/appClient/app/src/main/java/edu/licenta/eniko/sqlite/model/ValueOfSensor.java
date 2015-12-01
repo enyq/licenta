@@ -27,7 +27,7 @@ public class ValueOfSensor {
     @DatabaseField(columnName = HomeManagementDBContract.ValueToSensorEntries.COLUMN_NAME_DATE)
     private Date receiveDate;
 
-    ValueOfSensor() {
+    public ValueOfSensor() {
     }
 
     public ValueOfSensor(Sensor sensor, long data, Date receiveDate) {
